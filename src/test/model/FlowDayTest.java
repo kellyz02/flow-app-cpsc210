@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 class FlowDayTest {
@@ -12,13 +11,13 @@ class FlowDayTest {
 
     @BeforeEach
     void runBefore() {
-        testFlowDay = new FlowDay("February 9, 2022");
+        testFlowDay = new FlowDay("14");
     }
 
     @Test
     void testConstructor() {
-        assertEquals("February 9, 2022", testFlowDay.getDate());
-        // assertTrue(flow.isEmpty()); // do i need this case???
+        assertEquals("2", testFlowDay.getDay());
+        assertEquals("", testFlowDay.getFlow());
         ArrayList<String> moods = testFlowDay.getMoods();
         assertTrue(moods.isEmpty());
         ArrayList<String> symptoms = testFlowDay.getSymptoms();
@@ -57,10 +56,13 @@ class FlowDayTest {
         assertEquals(2, symptoms.size());
     }
 
+    /*
     @Test
     void testToString() {
         assertTrue(testFlowDay.toString().contains("On February 9, 2022"));
     }
+
+     */
 
 
 

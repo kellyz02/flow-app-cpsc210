@@ -1,11 +1,10 @@
 package model;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 // Represents a day on the menstrual cycle that has recorded flow, mood, and symptoms
 public class FlowDay {
-    private String date;
+    private String dayName;
     private ArrayList<String> moods;                     // select from: happy, sad, moody, angry, unmotivated
     private String flow;                        // flow measured by spotting, light, medium, heavy
     private ArrayList<String> symptoms;                 // select from cramps, fatigue, food cravings, headaches, no symptoms
@@ -14,8 +13,8 @@ public class FlowDay {
     // OR Constructs a day with a date, no flow entered, no moods entered, and no symptoms entered
     //public FlowDay(String flowDate, String flowLog, ArrayList<String> moodLog, ArrayList<String> symptomsLog) {
         // stub for constructor;
-    public FlowDay(String flowDate) {
-        this.date = flowDate;
+    public FlowDay(String day) {
+        this.dayName = day;
         this.moods = new ArrayList<>();
         this.flow = "";
         this.symptoms = new ArrayList<>();
@@ -36,7 +35,7 @@ public class FlowDay {
             symptoms.add(symptom);
         }
     }
-
+/*
     // EFFECTS: returns a string representation the day logged
     public String toString() {
         if (flow == null) {
@@ -71,6 +70,8 @@ public class FlowDay {
         }
     }
 
+ */
+
     public ArrayList<String> getMoods() {
         return moods;
     }
@@ -83,7 +84,7 @@ public class FlowDay {
         return symptoms;
     }
 
-    public String getDate() {
-        return date;
+    public String getDay() {
+        return dayName;
     }
 }
