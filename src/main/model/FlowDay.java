@@ -84,7 +84,7 @@ public class FlowDay {
         return symptoms;
     }
 
-    public String getDay() {
+    public String getDayName() {
         return dayName;
     }
 }

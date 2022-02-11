@@ -1,6 +1,5 @@
 package ui;
 
-import model.EntryManager;
 import model.FlowDay;
 import model.FlowMonth;
 
@@ -12,7 +11,9 @@ import java.util.regex.Pattern;
 
 public class FlowApp {
     private Scanner input;
-    private EntryManager entryManager = new EntryManager();
+    // private EntryManager entryManager = new EntryManager();
+    private Map<String, FlowMonth> flowMonthYearMap = new HashMap<>();
+
 
     // EFFECTS: runs the menstrual cycle tracker application
     public FlowApp() {
@@ -21,13 +22,13 @@ public class FlowApp {
 
     //MODIFIES: this
     // EFFECTS: processes user input
-    private void runFlow() {
+    private void runFlowApp() {
         boolean keepGoing = true;
         String command = null;
 
         init();
 
-        while(keepGoing) {
+        while (keepGoing) {
             displayMenu();
             command = input.next();
             command = command.toLowerCase();
@@ -46,13 +47,63 @@ public class FlowApp {
     // EFFECTS: processes user command
     private void processCommand(String command) {
         if (command.equals("e")) {
-            displayFlowDayMenu();
+            enterFlowDay();
         } else if (command.equals("v")) {
             viewPreviousFlowDays();
         } else {
             System.out.println("Selection not valid...");
         }
     }
+
+
+    private void processFeelingCommand(String command, FlowDay newFlowDay) {
+        if (command.equals("h")) {
+            newFlowDay.enterMood("happy! :)");
+        } else if (command.equals("s")) {
+            newFlowDay.enterMood("sad :(");
+        } else if (command.equals("m")) {
+            newFlowDay.enterMood("angry >:(");
+        } else if (command.equals("u")) {
+            newFlowDay.enterMood("unmotivated");
+        } else if (command.equals("n")) {
+            newFlowDay.enterMood("");
+        } else {
+            System.out.println("selection not valid! please choose one of the options listed above.");
+        }
+    }
+
+    private void processFlowCommand(String command, FlowDay newFlowDay) {
+        if (command.equals("s")) {
+            newFlowDay.enterFlow("spotting");
+        } else if (command.equals("l")) {
+            newFlowDay.enterFlow("light flow");
+        } else if (command.equals("m")) {
+            newFlowDay.enterFlow("medium flow");
+        } else if (command.equals("h")) {
+            newFlowDay.enterFlow("heavy flow");
+        } else if (command.equals("n")) {
+            newFlowDay.enterFlow("");
+        } else {
+            System.out.println("selection not valid! please choose one of the options listed above.");
+        }
+    }
+
+    private void processSymptomsCommand(String command, FlowDay newFlowDay) {
+        if (command.equals("c")) {
+            newFlowDay.enterFlow("cramps");
+        } else if (command.equals("f")) {
+            newFlowDay.enterFlow("fatigue");
+        } else if (command.equals("fc")) {
+            newFlowDay.enterFlow("food cravings");
+        } else if (command.equals("h")) {
+            newFlowDay.enterFlow("headaches");
+        } else if (command.equals("n")) {
+            newFlowDay.enterFlow("");
+        } else {
+            System.out.println("selection not valid! please choose one of the options listed above.");
+        }
+    }
+
 
     // MODIFIES: this
     // EFFECTS: initializes the app
@@ -69,19 +120,39 @@ public class FlowApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: ...
-    private void displayFlowDayMenu() {
-        System.out.println("\nselect a field to log your flow day:");
-        System.out.println("\td -> date");
-        System.out.println("\tf -> flow");
-        System.out.println("\tm -> mood");
-        System.out.println("\ts -> symptoms");
-        System.out.println("\tq -> quit");
+    // EFFECTS: ..
+    private void displayFeelingsMenu() {
+        System.out.print("how are you feeling today?");
+        System.out.println("\th -> happy!");
+        System.out.println("\ts -> sad :(");
+        System.out.println("\tm -> moody");
+        System.out.println("\ta -> angry >:(");
+        System.out.println("\tn -> no feeling entry for today");
+    }
+
+    // MODIFIES: this
+    // EFFECTS: ..
+    private void displayFlowMenu() {
+        System.out.print("enter the level of flow:");
+        System.out.println("\ts -> spotting!");
+        System.out.println("\tl -> light");
+        System.out.println("\tm -> medium");
+        System.out.println("\th -> heavy");
+        System.out.println("\tn -> no flow entry for today");
+    }
+
+    private void displaySymptomsMenu() {
+        System.out.print("enter the symptoms you experienced");
+        System.out.println("\tc -> cramps");
+        System.out.println("\tf -> fatigue");
+        System.out.println("\tfc -> food cravings");
+        System.out.println("\th -> headaches");
+        System.out.println("\tn -> no symptoms");
     }
 
     // MODIFIES: this
     // EFFECTS: ...
-    private void enterDate() {
+    private void enterFlowDay() {
         System.out.print("please enter the date of the flow day as DD/MM/YYYY");
         String dateName = input.nextLine();
         String dateNamePattern = "\\d\\d\\p{/}\\d\\d\\p{/}\\d\\d\\d\\d";
@@ -92,62 +163,90 @@ public class FlowApp {
             if (Pattern.matches(monthNamePattern, monthName)) {
                 FlowDay newFlowDay = new FlowDay(dateName);
                 FlowMonth newFlowMonth = new FlowMonth(monthName);
-                entryManager.addFlowMonth(monthName, newFlowMonth);
-                FlowMonth newMonth = .get(monthName);
+                flowMonthYearMap.putIfAbsent(monthName, newFlowMonth);
+                flowMonthYearMap.get(monthName).addFlowDay(newFlowDay);
+                addAttributes(newFlowDay);
             }
         } else {
-            System.out.println("input is not properly formatted. please try again :)");
+            System.out.println("date is not properly formatted. please try again :)");
         }
     }
 
-    private void dayToMonth() {
+    private void addAttributes(FlowDay newFlowDay) {
+        displayFeelingsMenu();
+        String feeling = input.nextLine();
+        processFeelingCommand(feeling, newFlowDay);
+        displayFlowMenu();
+        String flow = input.nextLine();
+        processFlowCommand(flow, newFlowDay);
+        displaySymptomsMenu();
+        String symptom = input.nextLine();
+        processSymptomsCommand(symptom, newFlowDay);
+    }
+
+    private void viewPreviousFlowDays() {
+        System.out.print("your previously logged months:");
+        for (String monthYear : flowMonthYearMap.keySet()) {
+            System.out.println(monthYear);
+        }
+        System.out.print("please enter the month and year you would like to view as MM/YYYY");
+        String monthName = input.nextLine();
+        String monthNamePattern = "\\d\\d\\p{/}\\d\\d\\d\\d";
+        if (Pattern.matches(monthNamePattern, monthName)) {
+            System.out.println(flowMonthYearMap.get(monthName).getFlowDays()); // might have to check if it exists first.
+            System.out.print("please enter the flow day you would like to view in detail as DD/MM/YYYY");
+            String dayName = input.nextLine();
+            String dayNamePattern = "\\d\\d\\p{/}\\d\\d\\p{/}\\d\\d\\d\\d";
+            if (Pattern.matches(dayNamePattern, dayName)) {
+                printAttributes1(flowMonthYearMap.get(monthName).findFlowDay(dayName));
+            }
+
+        } else {
+            System.out.println("date is not properly formatted. please try again :)");
+        }
 
     }
 
-    /*
-
-    // MODIFIES: this
-    // EFFECTS: creates a flow day by entering date
-    private void enterDate(Integer command) { // WHAT TYPE IS THE DATE....
-        System.out.println("Enter the date for your flow day");
-        FlowDay newfd = new FlowDay(2022);
-        addFlowDay(newfd); // it's okay to have it like this.'
-
-    // MODIFIES: this
-    // EFFECTS: enters the flow in for that day
-    private void enterFlow(String command) {
-        System.out.println("Enter the flow for your flow day");
-
-
+    private void printAttributes1(FlowDay oldDay) {
+        System.out.print("On " + oldDay.getDayName() + ", you experienced:");
+        if (oldDay.getFlow() == null) {
+            if (oldDay.getMoods().isEmpty()) {
+                if (oldDay.getSymptoms().isEmpty()) {
+                    System.out.print("On " + oldDay.getDayName());
+                } else {
+                    System.out.print("On " + oldDay.getDayName() + ", You experienced: " + oldDay.getSymptoms() + ".");
+                }
+            } else {
+                if (oldDay.getSymptoms().isEmpty()) {
+                    System.out.print("On " + oldDay.getDayName() + ", You were feeling: " + oldDay.getMoods() + ".");
+                } else {
+                    System.out.print("On " + oldDay.getDayName() + ", You were feeling: " + oldDay.getMoods()
+                            + ". You experienced: " + oldDay.getSymptoms() + ".");
+                }
+            }
+        } else {
+            printAttributes2(oldDay);
+        }
     }
 
-    // MODIFIES: this
-    // EFFECTS: adds a mood to list of moods
-    private void enterMood() {
-
+    private void printAttributes2(FlowDay oldDay) {
+        if (oldDay.getMoods().isEmpty()) {
+            if (oldDay.getSymptoms().isEmpty()) {
+                System.out.print("On " + oldDay.getDayName() + ", My flow was: " + oldDay.getFlow() + ".");
+            } else {
+                System.out.print("On" + oldDay.getDayName() + ", My flow was: " + oldDay.getFlow()
+                        + ". You experienced: "
+                        + oldDay.getSymptoms() + ".");
+            }
+        } else {
+            if (oldDay.getSymptoms().isEmpty()) {
+                System.out.print("On " + oldDay.getDayName() + ", My flow was: " + oldDay.getFlow()
+                        + ". You were feeling: " + oldDay.getMoods() + ".");
+            } else {
+                System.out.print("On " + oldDay.getDayName() + ", My flow was: " + oldDay.getFlow()
+                        + ". You were feeling: " + oldDay.getMoods()
+                        + "You experienced: " + oldDay.getSymptoms() + ".");
+            }
+        }
     }
-
-    // MODIFIES: this
-    // EFFECTS: adds a symptom to list of symptoms
-    private void enterSymptom() {
-
-    }
-
-    // EFFECTS: prompts user to select from the saved years to view the cycles that have occurred
-    private FlowMonth selectOverview() {
-        return null;
-    }
-
-
-    // EFFECTS: prompts user to select from a day that has data logged on it
-    private FlowDay selectFlowDay() {
-        return null;
-    }
-
-    // EFFECTS: prints the data entered in for the selected day to the screen
-    private void printFlowDay(FlowDay selected) {
-
-    }
-
-     */
 }

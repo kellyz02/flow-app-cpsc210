@@ -1,7 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 
 public class FlowMonth {
@@ -17,7 +16,7 @@ public class FlowMonth {
     public void addFlowDay(FlowDay day) {
         for (int i = 0; i < flowDays.size(); i++) {
             FlowDay fd = flowDays.get(i);
-            if (fd.getDay().equals(day.getDay())) {
+            if (fd.getDayName().equals(day.getDayName())) {
                 flowDays.set(i, day);
                 return;
             }
@@ -28,7 +27,7 @@ public class FlowMonth {
     public void deleteFlowDay(FlowDay day) {
         for (int i = 0; i < flowDays.size(); i++) {
             FlowDay fd = flowDays.get(i);
-            if (fd.getDay().equals(day.getDay())) {
+            if (fd.getDayName().equals(day.getDayName())) {
                 flowDays.remove(day);
             }
         }
@@ -36,7 +35,7 @@ public class FlowMonth {
 
     public FlowDay findFlowDay(String dayName) {
         for (FlowDay fd : flowDays) {
-            if (fd.getDay().equals(dayName)) {
+            if (fd.getDayName().equals(dayName)) {
                 return fd;
             }
         }

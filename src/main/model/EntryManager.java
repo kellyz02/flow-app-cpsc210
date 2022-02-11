@@ -1,5 +1,7 @@
 package model;
 
+/*
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,11 +12,11 @@ public class EntryManager {
         flowMonthYearMap.putIfAbsent(monthName, monthObject);
     }
 
-    /*
+
     public void getFlowMonth(String monthName) {
         flowMonthYearMap.get(monthName);
     }
-    */
+
 
     public Integer getMapSize() {
         return flowMonthYearMap.size();
@@ -22,7 +24,7 @@ public class EntryManager {
 }
 
 
-/*
+
 public class EntryManager {
     private HashMap<String, FlowMonth> flowMonthYearMap;
 
@@ -41,9 +43,9 @@ public class EntryManager {
     }
 }
 
- */
 
-/*
+
+
 
 
 public class EntryManager {

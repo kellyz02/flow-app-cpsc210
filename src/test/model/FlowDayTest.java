@@ -16,7 +16,7 @@ class FlowDayTest {
 
     @Test
     void testConstructor() {
-        assertEquals("2", testFlowDay.getDay());
+        assertEquals("2", testFlowDay.getDayName());
         assertEquals("", testFlowDay.getFlow());
         ArrayList<String> moods = testFlowDay.getMoods();
         assertTrue(moods.isEmpty());

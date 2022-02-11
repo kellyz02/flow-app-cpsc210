@@ -1,4 +1,5 @@
 package model;
+/* // got rid of this, moved it to FlowApp, like the hairsalon.
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,3 +25,5 @@ public class EntryManagerTest {
 
     }
 }
+
+ */
