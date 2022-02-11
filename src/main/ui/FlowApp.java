@@ -73,35 +73,6 @@ public class FlowApp {
             processViewDeleteCommand(vdCommand, monthName, dayName);
         }
     }
-    /*
-    private void processInputCommand(String command, FlowDay newFlowDay) {
-        if (command.equals("f")) {
-            displayFlowMenu();
-            String flow = input.next();
-            processFlowCommand(flow, newFlowDay);
-            displayInputMenu();
-            processInputCommand(command, newFlowDay);
-        } else if (command.equals("s")) {
-            displaySymptomsMenu();
-            String symptom = input.next();
-            processSymptomsCommand(symptom, newFlowDay);
-            displayInputMenu();
-            processInputCommand(command, newFlowDay);
-        } else if (command.equals("m")) {
-            displayFeelingsMenu();
-            String feeling = input.next();
-            processFeelingCommand(feeling, newFlowDay);
-            displayInputMenu();
-            processInputCommand(command, newFlowDay);
-        } else if (command.equals("f")) {
-            printAttributes1(newFlowDay);
-        } else {
-            System.out.println("selection not valid! please choose one of the options listed above. \n");
-            String feeling = input.next();
-            processInputCommand(command, newFlowDay);
-        }
-    }
-    */
 
     // MODIFIES: this
     // EFFECTS: processes user command when selecting feelings
@@ -155,7 +126,6 @@ public class FlowApp {
         }
     }
 
-
     // EFFECTS: displays menu of options to user
     private void displayMenu() {
         System.out.println("\nWelcome to FlowApp!");
@@ -168,13 +138,6 @@ public class FlowApp {
         System.out.println("would you like to view or delete the selected flow day?");
         System.out.println("\tv -> view");
         System.out.println("\td -> delete");
-    }
-
-    private void displayInputMenu() {
-        System.out.println("\nlog the data for your flow day");
-        System.out.println("\tf -> enter flow");
-        System.out.println("\tm -> enter mood");
-        System.out.println("\ts -> enter symptoms");
     }
 
     // MODIFIES: this
@@ -250,26 +213,83 @@ public class FlowApp {
         for (String monthYear : flowMonthYearMap.keySet()) {
             System.out.println(monthYear);
         }
-        System.out.println("please enter the month and year you would like to view/delete as MM/YYYY");
+        System.out.println("please enter the month and year you would like to access as MM/YYYY");
         String monthName = input.next();
         String monthNamePattern = "\\d\\d\\/\\d\\d\\d\\d";
         if (Pattern.matches(monthNamePattern, monthName)) {
-            for (FlowDay flowDay : flowMonthYearMap.get(monthName).getFlowDays()) {
-                System.out.println(flowDay.getDayName());
-            } // might have to check if it exists 1st
-            System.out.println("please enter the flow day you would like to view/delete in detail as DD/MM/YYYY");
-            String dayName = input.next();
-            String dayNamePattern = "\\d\\d\\/\\d\\d\\/\\d\\d\\d\\d";
-            if (Pattern.matches(dayNamePattern, dayName)) { // CHECK HERE IF IT EXISTS.
-                displayViewDeleteMenu();
-                String viewDelete = input.next();
-                processViewDeleteCommand(viewDelete, monthName, dayName);
-            }
+            monthExists(monthName);
         } else {
             System.out.println("date is not properly formatted. please try again :)");
             viewPreviousFlowDays();
         }
     }
+
+    private void monthExists(String monthName) {
+        if (flowMonthYearMap.containsKey(monthName)) {
+            for (FlowDay flowDay : flowMonthYearMap.get(monthName).getFlowDays()) {
+                System.out.println(flowDay.getDayName());
+            }
+            System.out.println("please enter the flow day you would like to view/delete in detail as DD/MM/YYYY");
+            String dayName = input.next();
+            String dayNamePattern = "\\d\\d\\/\\d\\d\\/\\d\\d\\d\\d";
+            if (Pattern.matches(dayNamePattern, dayName)) {
+                displayViewDeleteMenu();
+                String viewDelete = input.next();
+                processViewDeleteCommand(viewDelete, monthName, dayName);
+            }
+        } else {
+            System.out.println("nothing has been logged for the entered date. please try again :)");
+            viewPreviousFlowDays();
+        }
+    }
+
+    private void dayExists(String dayName, String monthName) {
+        for (FlowDay fd : flowMonthYearMap.get(monthName).getFlowDays()) {
+            if (fd.getDayName().equals(dayName)) {
+                displayViewDeleteMenu();
+                String viewDelete = input.next();
+                processViewDeleteCommand(viewDelete, monthName, fd);
+            }
+        }
+    }
+
+    private void dayExists(String dayName, String monthName) {
+        for (FlowDay fd : flowMonthYearMap.get(monthName).getFlowDays()) {
+            if (fd.getDayName().equals(dayName)) {
+                displayViewDeleteMenu();
+                String viewDelete = input.next();
+                processViewDeleteCommand(viewDelete, monthName, fd);
+            }
+        }
+    }
+
+    private void processViewDeleteCommand(String command, String monthName, FlowDay fd) {
+        if (command.equals("v")) {
+            printAttributes1(fd);
+        } else if (command.equals("d")) {
+            flowMonthYearMap.get(monthName).deleteFlowDay(fd);
+        } else {
+            System.out.println("selection not valid! \n");
+            String vdCommand = input.next();
+            processViewDeleteCommand(vdCommand, monthName, fd);
+        }
+    }
+
+
+        /*
+        for (FlowDay fd : flowMonthYearMap.get(monthName).getFlowDays()) {
+            if (fd.getDayName().equals(dayName)) {
+                displayViewDeleteMenu();
+                String viewDelete = input.next();
+                processViewDeleteCommand(viewDelete, monthName, dayName);
+            } else {
+                System.out.println("nothing has been logged for the entered date. please try again :)");
+                viewPreviousFlowDays();
+            }
+        }
+    }
+
+         */
 
     private void printAttributes1(FlowDay oldDay) {
         String listMood = String.join(", ", oldDay.getMoods());
