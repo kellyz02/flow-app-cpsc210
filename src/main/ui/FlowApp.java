@@ -68,8 +68,9 @@ public class FlowApp {
         } else if (command.equals("d")) {
             flowMonthYearMap.get(monthName).deleteFlowDay(flowMonthYearMap.get(monthName).findFlowDay(dayName));
         } else {
-            System.out.println("selection not valid!");
-            displayViewDeleteMenu();
+            System.out.println("selection not valid! \n");
+            String vdCommand = input.next();
+            processViewDeleteCommand(vdCommand, monthName, dayName);
         }
     }
 
@@ -85,8 +86,9 @@ public class FlowApp {
         } else if (command.equals("u")) {
             newFlowDay.enterMood("unmotivated");
         } else {
-            System.out.println("selection not valid! please choose one of the options listed above.");
-            displayFeelingsMenu();
+            System.out.println("selection not valid! please choose one of the options listed above. \n");
+            String feeling = input.next();
+            processFeelingCommand(feeling, newFlowDay);
         }
     }
 
@@ -94,14 +96,15 @@ public class FlowApp {
         if (command.equals("s")) {
             newFlowDay.enterFlow("spotting");
         } else if (command.equals("l")) {
-            newFlowDay.enterFlow("light flow");
+            newFlowDay.enterFlow("light");
         } else if (command.equals("m")) {
-            newFlowDay.enterFlow("medium flow");
+            newFlowDay.enterFlow("medium");
         } else if (command.equals("h")) {
-            newFlowDay.enterFlow("heavy flow");
+            newFlowDay.enterFlow("heavy");
         } else {
-            System.out.println("selection not valid! please choose one of the options listed above.");
-            displayFlowMenu();
+            System.out.println("selection not valid! please choose one of the options listed above. \n");
+            String flow = input.next();
+            processFlowCommand(flow, newFlowDay);
         }
     }
 
@@ -117,8 +120,9 @@ public class FlowApp {
         } else if (command.equals("n")) {
             newFlowDay.enterSymptom("no symptoms");
         } else {
-            System.out.println("selection not valid! please choose one of the options listed above.");
-            displaySymptomsMenu();
+            System.out.println("selection not valid! please choose one of the options listed above. \n");
+            String symptom = input.next();
+            processSymptomsCommand(symptom, newFlowDay);
         }
     }
 
