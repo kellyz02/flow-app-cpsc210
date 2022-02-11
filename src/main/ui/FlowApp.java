@@ -11,8 +11,8 @@ import java.util.regex.Pattern;
 
 
 public class FlowApp {
-    private Map<String, FlowMonth> flowMonthYearMap = new HashMap<>();
     private Scanner input;
+    private EntryManager entryManager = new EntryManager();
 
     // EFFECTS: runs the menstrual cycle tracker application
     public FlowApp() {
@@ -92,10 +92,16 @@ public class FlowApp {
             if (Pattern.matches(monthNamePattern, monthName)) {
                 FlowDay newFlowDay = new FlowDay(dateName);
                 FlowMonth newFlowMonth = new FlowMonth(monthName);
-                EntryManager.addFlowMonth(monthName, newFlowMonth);
+                entryManager.addFlowMonth(monthName, newFlowMonth);
+                FlowMonth newMonth = .get(monthName);
             }
-
+        } else {
+            System.out.println("input is not properly formatted. please try again :)");
         }
+    }
+
+    private void dayToMonth() {
+
     }
 
     /*

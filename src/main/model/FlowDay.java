@@ -5,9 +5,9 @@ import java.util.ArrayList;
 // Represents a day on the menstrual cycle that has recorded flow, mood, and symptoms
 public class FlowDay {
     private String dayName;
-    private ArrayList<String> moods;                     // select from: happy, sad, moody, angry, unmotivated
-    private String flow;                        // flow measured by spotting, light, medium, heavy
-    private ArrayList<String> symptoms;                 // select from cramps, fatigue, food cravings, headaches, no symptoms
+    private ArrayList<String> moods;           // select from: happy, sad, moody, angry, unmotivated
+    private String flow;                       // flow measured by spotting, light, medium, heavy
+    private ArrayList<String> symptoms;        // select from cramps, fatigue, food cravings, headaches, no symptoms
 
    // Adds mood, flow, and symptom(s) to a day of the menstruation period
     // OR Constructs a day with a date, no flow entered, no moods entered, and no symptoms entered

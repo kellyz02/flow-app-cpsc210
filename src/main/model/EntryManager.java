@@ -10,8 +10,14 @@ public class EntryManager {
         flowMonthYearMap.putIfAbsent(monthName, monthObject);
     }
 
-    public void getFlowMonth(String monthName) { // changed it to private void
+    /*
+    public void getFlowMonth(String monthName) {
         flowMonthYearMap.get(monthName);
+    }
+    */
+
+    public Integer getMapSize() {
+        return flowMonthYearMap.size();
     }
 }
 
