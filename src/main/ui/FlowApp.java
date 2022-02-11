@@ -81,7 +81,7 @@ public class FlowApp {
             newFlowDay.enterMood("happy :)");
         } else if (command.equals("s")) {
             newFlowDay.enterMood("sad :(");
-        } else if (command.equals("m")) {
+        } else if (command.equals("a")) {
             newFlowDay.enterMood("angry >:(");
         } else if (command.equals("u")) {
             newFlowDay.enterMood("unmotivated");
