@@ -73,6 +73,35 @@ public class FlowApp {
             processViewDeleteCommand(vdCommand, monthName, dayName);
         }
     }
+    /*
+    private void processInputCommand(String command, FlowDay newFlowDay) {
+        if (command.equals("f")) {
+            displayFlowMenu();
+            String flow = input.next();
+            processFlowCommand(flow, newFlowDay);
+            displayInputMenu();
+            processInputCommand(command, newFlowDay);
+        } else if (command.equals("s")) {
+            displaySymptomsMenu();
+            String symptom = input.next();
+            processSymptomsCommand(symptom, newFlowDay);
+            displayInputMenu();
+            processInputCommand(command, newFlowDay);
+        } else if (command.equals("m")) {
+            displayFeelingsMenu();
+            String feeling = input.next();
+            processFeelingCommand(feeling, newFlowDay);
+            displayInputMenu();
+            processInputCommand(command, newFlowDay);
+        } else if (command.equals("f")) {
+            printAttributes1(newFlowDay);
+        } else {
+            System.out.println("selection not valid! please choose one of the options listed above. \n");
+            String feeling = input.next();
+            processInputCommand(command, newFlowDay);
+        }
+    }
+    */
 
     // MODIFIES: this
     // EFFECTS: processes user command when selecting feelings
@@ -141,13 +170,20 @@ public class FlowApp {
         System.out.println("\td -> delete");
     }
 
+    private void displayInputMenu() {
+        System.out.println("\nlog the data for your flow day");
+        System.out.println("\tf -> enter flow");
+        System.out.println("\tm -> enter mood");
+        System.out.println("\ts -> enter symptoms");
+    }
+
     // MODIFIES: this
     // EFFECTS: ..
     private void displayFeelingsMenu() {
         System.out.println("how are you feeling today?");
         System.out.println("\th -> happy!");
         System.out.println("\ts -> sad :(");
-        System.out.println("\tm -> moody");
+        System.out.println("\tu -> unmotivated");
         System.out.println("\ta -> angry >:(");
     }
 
@@ -187,6 +223,9 @@ public class FlowApp {
                 flowMonthYearMap.get(monthName).addFlowDay(newFlowDay);
                 addAttributes(newFlowDay);
                 printAttributes1(newFlowDay);
+            } else {
+                System.out.println("date is not properly formatted. please try again :)");
+                enterFlowDay();
             }
         } else {
             System.out.println("date is not properly formatted. please try again :)");
@@ -221,7 +260,7 @@ public class FlowApp {
             System.out.println("please enter the flow day you would like to view/delete in detail as DD/MM/YYYY");
             String dayName = input.next();
             String dayNamePattern = "\\d\\d\\/\\d\\d\\/\\d\\d\\d\\d";
-            if (Pattern.matches(dayNamePattern, dayName)) {
+            if (Pattern.matches(dayNamePattern, dayName)) { // CHECK HERE IF IT EXISTS.
                 displayViewDeleteMenu();
                 String viewDelete = input.next();
                 processViewDeleteCommand(viewDelete, monthName, dayName);
