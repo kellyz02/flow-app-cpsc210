@@ -55,5 +55,14 @@ public class FlowMonthTest {
         assertEquals(0, flowDays.size());
     }
 
+    @Test
+    void testFindFlowDay() {
+        assertEquals(null, testFlowMonth.findFlowDay("2"));
+
+        FlowDay testFlowDay1 = new FlowDay("2");
+        testFlowMonth.addFlowDay(testFlowDay1);
+        assertEquals(testFlowDay1, testFlowMonth.findFlowDay("2"));
+    }
+
 
 }

@@ -1,18 +1,22 @@
 package ui;
 
+import model.EntryManager;
 import model.FlowDay;
+import model.FlowMonth;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
-/*
 
 public class FlowApp {
-    private FlowYear 2022;
+    private Map<String, FlowMonth> flowMonthYearMap = new HashMap<>();
     private Scanner input;
 
     // EFFECTS: runs the menstrual cycle tracker application
     public FlowApp() {
-        runFlow();
+        runFlowApp();
     }
 
     //MODIFIES: this
@@ -42,7 +46,7 @@ public class FlowApp {
     // EFFECTS: processes user command
     private void processCommand(String command) {
         if (command.equals("e")) {
-            doEnterFlowDay();
+            displayFlowDayMenu();
         } else if (command.equals("v")) {
             viewPreviousFlowDays();
         } else {
@@ -51,9 +55,8 @@ public class FlowApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: initializes the year
+    // EFFECTS: initializes the app
     private void init() {
-        2022 = new FlowYear(2022);
         input = new Scanner(System.in);
         input.useDelimiter("/n");
     }
@@ -64,6 +67,38 @@ public class FlowApp {
         System.out.println("\te -> enter a new flow day");
         System.out.println("\tv -> view previously logged flow days");
     }
+
+    // MODIFIES: this
+    // EFFECTS: ...
+    private void displayFlowDayMenu() {
+        System.out.println("\nselect a field to log your flow day:");
+        System.out.println("\td -> date");
+        System.out.println("\tf -> flow");
+        System.out.println("\tm -> mood");
+        System.out.println("\ts -> symptoms");
+        System.out.println("\tq -> quit");
+    }
+
+    // MODIFIES: this
+    // EFFECTS: ...
+    private void enterDate() {
+        System.out.print("please enter the date of the flow day as DD/MM/YYYY");
+        String dateName = input.nextLine();
+        String dateNamePattern = "\\d\\d\\p{/}\\d\\d\\p{/}\\d\\d\\d\\d";
+        if (Pattern.matches(dateNamePattern, dateName)) {
+            System.out.print("please enter the month and year of the flow day as MM/YYYY");
+            String monthName = input.nextLine();
+            String monthNamePattern = "\\d\\d\\p{/}\\d\\d\\d\\d";
+            if (Pattern.matches(monthNamePattern, monthName)) {
+                FlowDay newFlowDay = new FlowDay(dateName);
+                FlowMonth newFlowMonth = new FlowMonth(monthName);
+                EntryManager.addFlowMonth(monthName, newFlowMonth);
+            }
+
+        }
+    }
+
+    /*
 
     // MODIFIES: this
     // EFFECTS: creates a flow day by entering date
@@ -107,5 +142,6 @@ public class FlowApp {
     private void printFlowDay(FlowDay selected) {
 
     }
+
+     */
 }
-*/

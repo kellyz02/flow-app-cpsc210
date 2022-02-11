@@ -1,7 +1,7 @@
 package model;
 
 import java.util.ArrayList;
-
+import java.util.Objects;
 
 
 public class FlowMonth {
@@ -34,12 +34,34 @@ public class FlowMonth {
         }
     }
 
+    public FlowDay findFlowDay(String dayName) {
+        for (FlowDay fd : flowDays) {
+            if (fd.getDay().equals(dayName)) {
+                return fd;
+            }
+        }
+        return null;
+    }
+
     public String getMonthName() {
         return this.monthName;
     }
 
     public ArrayList<FlowDay> getFlowDays() {
         return this.flowDays;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FlowMonth flowMonth = (FlowMonth) o;
+        return monthName.equals(flowMonth.monthName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(monthName);
     }
 }
 
