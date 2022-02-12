@@ -55,15 +55,4 @@ class FlowDayTest {
         testFlowDay.enterSymptom("Cramps");
         assertEquals(2, symptoms.size());
     }
-
-    /*
-    @Test
-    void testToString() {
-        assertTrue(testFlowDay.toString().contains("On February 9, 2022"));
-    }
-
-     */
-
-
-
 }

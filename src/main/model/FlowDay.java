@@ -9,10 +9,7 @@ public class FlowDay {
     private String flow;                       // flow measured by spotting, light, medium, heavy
     private ArrayList<String> symptoms;        // select from cramps, fatigue, food cravings, headaches, no symptoms
 
-   // Adds mood, flow, and symptom(s) to a day of the menstruation period
-    // OR Constructs a day with a date, no flow entered, no moods entered, and no symptoms entered
-    //public FlowDay(String flowDate, String flowLog, ArrayList<String> moodLog, ArrayList<String> symptomsLog) {
-        // stub for constructor;
+    // EFFECTS: constructs a FlowDay with a given date, empty moods list, flow field, and empty symptoms list
     public FlowDay(String day) {
         this.dayName = day;
         this.moods = new ArrayList<>();
@@ -20,16 +17,19 @@ public class FlowDay {
         this.symptoms = new ArrayList<>();
     }
 
+    //EFFECTS: enters a string into the flow field
     public void enterFlow(String flow) {
         this.flow = flow;
     }
 
+    // EFFECTS: enters a string into the moods list
     public void enterMood(String mood) {
         if (!moods.contains(mood)) {
             moods.add(mood);
         }
     }
 
+    // EFFECTS: enters a symptom into the symptom list
     public void enterSymptom(String symptom) {
         if (!symptoms.contains(symptom)) {
             symptoms.add(symptom);
