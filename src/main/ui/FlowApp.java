@@ -60,6 +60,35 @@ public class FlowApp {
         }
     }
 
+
+    private void processInputCommand(String command, FlowDay newFlowDay) {
+        if (command.equals("f")) {
+            displayFlowMenu();
+            String flow = input.next();
+            processFlowCommand(flow, newFlowDay);
+            displayInputMenu();
+            helpAttributes(newFlowDay);
+        } else if (command.equals("s")) {
+            displaySymptomsMenu();
+            String symptom = input.next();
+            processSymptomsCommand(symptom, newFlowDay);
+            displayInputMenu();
+            helpAttributes(newFlowDay);
+        } else if (command.equals("m")) {
+            displayFeelingsMenu();
+            String feeling = input.next();
+            processFeelingCommand(feeling, newFlowDay);
+            displayInputMenu();
+            helpAttributes(newFlowDay);
+        } else if (command.equals("d")) {
+            printAttributes1(newFlowDay);
+        } else {
+            System.out.println("selection not valid! please choose one of the options listed above. \n");
+            helpAttributes(newFlowDay);
+        }
+    }
+
+
     // MODIFIES: this
     // EFFECTS: processes user command when choosing whether to delete or view a Flow Day
     private void processViewDeleteCommand(String command, String monthName, String dayName) {
@@ -67,6 +96,10 @@ public class FlowApp {
             printAttributes1(flowMonthYearMap.get(monthName).findFlowDay(dayName));
         } else if (command.equals("d")) {
             flowMonthYearMap.get(monthName).deleteFlowDay(flowMonthYearMap.get(monthName).findFlowDay(dayName));
+            if (flowMonthYearMap.get(monthName).getFlowDays().isEmpty()) {
+                flowMonthYearMap.remove(monthName);
+                System.out.println("this flow day has been successfully deleted");
+            }
         } else {
             System.out.println("selection not valid! \n");
             String vdCommand = input.next();
@@ -145,6 +178,15 @@ public class FlowApp {
         System.out.println("\td -> delete");
     }
 
+    // EFFECTS: displays the menu of attributes the user can add to the new day
+    private void displayInputMenu() {
+        System.out.println("select the attribute you would like to add to for the flow day:");
+        System.out.println("\tf -> enter flow");
+        System.out.println("\tm -> enter moods");
+        System.out.println("\ts -> enter symptoms");
+        System.out.println("\td -> done flow day entry!");
+    }
+
     // EFFECTS: displays menu of feeling options to the user
     private void displayFeelingsMenu() {
         System.out.println("how are you feeling today?");
@@ -188,8 +230,8 @@ public class FlowApp {
                 FlowMonth newFlowMonth = new FlowMonth(monthName);
                 flowMonthYearMap.putIfAbsent(monthName, newFlowMonth);
                 flowMonthYearMap.get(monthName).addFlowDay(newFlowDay);
-                addAttributes(newFlowDay);
-                printAttributes1(newFlowDay);
+                displayInputMenu();
+                helpAttributes(newFlowDay);
             } else {
                 System.out.println("date is not properly formatted. please try again :)");
                 enterFlowDay();
@@ -200,6 +242,14 @@ public class FlowApp {
         }
     }
 
+    // EFFECTS: helper function
+    private void helpAttributes(FlowDay newFlowDay) {
+        String choose = input.next();
+        processInputCommand(choose, newFlowDay);
+    }
+
+
+    /*
     // MODIFIES: this
     // EFFECTS: prompts user to select their attributes in the different fields to add to the new FlowDay
     private void addAttributes(FlowDay newFlowDay) {
@@ -213,7 +263,7 @@ public class FlowApp {
         String symptom = input.next();
         processSymptomsCommand(symptom, newFlowDay);
     }
-
+     */
     // EFFECTS: allows user to access previously logged days
     private void viewPreviousFlowDays() {
         System.out.println("your previously logged months:");
@@ -235,6 +285,7 @@ public class FlowApp {
     private void monthExists(String monthName) {
         if (flowMonthYearMap.containsKey(monthName)) {
             for (FlowDay flowDay : flowMonthYearMap.get(monthName).getFlowDays()) {
+                System.out.println("your previously logged days in the chosen month:");
                 System.out.println(flowDay.getDayName());
             }
             System.out.println("please enter the flow day you would like to view/delete in detail as DD/MM/YYYY");
@@ -253,8 +304,8 @@ public class FlowApp {
 
     // EFFECTS: returns the attributes for the selected FlowDay
     private void printAttributes1(FlowDay oldDay) {
-        String listMood = String.join(", ", oldDay.getMoods());
-        String listSymptom = String.join(", ", oldDay.getSymptoms());
+        String listMood = String.join(" + ", oldDay.getMoods());
+        String listSymptom = String.join(" + ", oldDay.getSymptoms());
         if (oldDay.getMoods().isEmpty()) {
             if (oldDay.getSymptoms().isEmpty()) {
                 System.out.println("On " + oldDay.getDayName() + ", your flow was " + oldDay.getFlow());
