@@ -1,11 +1,14 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 // Represents a month that contains a list of Flow Days
 public class FlowMonth {
     private String monthName;
     private ArrayList<FlowDay> flowDays;
+    private Map<String, FlowMonth> flowMonthYearMap = new HashMap<>();
 
     // EFFECTS: constructs a month with an empty list of Flow Days
     public FlowMonth(String month) {
@@ -56,6 +59,13 @@ public class FlowMonth {
         return this.flowDays;
     }
 
+    public void deleteFromMap(String dayName) {
+        flowMonthYearMap.get(monthName).deleteFlowDay(flowMonthYearMap.get(monthName).findFlowDay(dayName));
+        if (flowMonthYearMap.get(monthName).getFlowDays().isEmpty()) {
+            flowMonthYearMap.remove(monthName);
+            System.out.println("this flow day has been successfully deleted");
+        }
+    }
 }
 
 

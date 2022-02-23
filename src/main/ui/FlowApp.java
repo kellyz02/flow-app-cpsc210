@@ -63,23 +63,11 @@ public class FlowApp {
 
     private void processInputCommand(String command, FlowDay newFlowDay) {
         if (command.equals("f")) {
-            displayFlowMenu();
-            String flow = input.next();
-            processFlowCommand(flow, newFlowDay);
-            displayInputMenu();
-            helpAttributes(newFlowDay);
+            displayFlowMenu(newFlowDay);
         } else if (command.equals("s")) {
-            displaySymptomsMenu();
-            String symptom = input.next();
-            processSymptomsCommand(symptom, newFlowDay);
-            displayInputMenu();
-            helpAttributes(newFlowDay);
+            displaySymptomsMenu(newFlowDay);
         } else if (command.equals("m")) {
-            displayFeelingsMenu();
-            String feeling = input.next();
-            processFeelingCommand(feeling, newFlowDay);
-            displayInputMenu();
-            helpAttributes(newFlowDay);
+            displayFeelingsMenu(newFlowDay);
         } else if (command.equals("d")) {
             printAttributes1(newFlowDay);
         } else {
@@ -188,31 +176,43 @@ public class FlowApp {
     }
 
     // EFFECTS: displays menu of feeling options to the user
-    private void displayFeelingsMenu() {
+    private void displayFeelingsMenu(FlowDay newFlowDay) {
         System.out.println("how are you feeling today?");
         System.out.println("\th -> happy!");
         System.out.println("\ts -> sad :(");
         System.out.println("\tu -> unmotivated");
         System.out.println("\ta -> angry >:(");
+        String feeling = input.next();
+        processFeelingCommand(feeling, newFlowDay);
+        displayInputMenu();
+        helpAttributes(newFlowDay);
     }
 
     // EFFECTS: displays menu of flow levels to the user
-    private void displayFlowMenu() {
+    private void displayFlowMenu(FlowDay newFlowDay) {
         System.out.println("enter the level of flow:");
         System.out.println("\ts -> spotting!");
         System.out.println("\tl -> light");
         System.out.println("\tm -> medium");
         System.out.println("\th -> heavy");
+        String flow = input.next(); // add all these functions into displayFlowMenu
+        processFlowCommand(flow, newFlowDay);
+        displayInputMenu();
+        helpAttributes(newFlowDay);
     }
 
     // EFFECTS: displays menu of symptoms to the user
-    private void displaySymptomsMenu() {
+    private void displaySymptomsMenu(FlowDay newFlowDay) {
         System.out.println("enter the symptoms you experienced");
         System.out.println("\tc -> cramps");
         System.out.println("\tf -> fatigue");
         System.out.println("\tfc -> food cravings");
         System.out.println("\th -> headaches");
         System.out.println("\tn -> no symptoms");
+        String symptom = input.next();
+        processSymptomsCommand(symptom, newFlowDay);
+        displayInputMenu();
+        helpAttributes(newFlowDay);
     }
 
     // MODIFIES: this
