@@ -15,4 +15,8 @@ helps them to better understand their experiences.*
 - As a user, I want to be able to view the days I have logged for each month.
 - As a user, I want to be able to delete a previously logged day.
 - As a user, I want to be able to edit a previously logged day.
+- As a user, when I select the quit option from the application menu, I want to be reminded to save the days I have
+  tracked so far to file.
+- As a user, when I start the application, I want to be given the option to load my to-do list from file.
+  
 
