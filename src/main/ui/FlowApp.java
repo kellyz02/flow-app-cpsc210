@@ -2,16 +2,15 @@ package ui;
 
 import model.FlowDay;
 import model.FlowMonth;
+import model.FlowTracker;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 // Menstrual cycle tracker application
 public class FlowApp {
     private Scanner input;
-    private Map<String, FlowMonth> flowMonthYearMap = new HashMap<>();
+    private FlowTracker flowTracker = new FlowTracker();
 
     // EFFECTS: runs the "FlowApp" application
     public FlowApp() {
@@ -81,11 +80,13 @@ public class FlowApp {
     // EFFECTS: processes user command when choosing whether to delete or view a Flow Day
     private void processViewDeleteCommand(String command, String monthName, String dayName) {
         if (command.equals("v")) {
-            printAttributes1(flowMonthYearMap.get(monthName).findFlowDay(dayName));
+            printAttributes1(flowTracker.getDay(monthName, dayName));
         } else if (command.equals("d")) {
-            flowMonthYearMap.get(monthName).deleteFlowDay(flowMonthYearMap.get(monthName).findFlowDay(dayName));
-            if (flowMonthYearMap.get(monthName).getFlowDays().isEmpty()) {
-                flowMonthYearMap.remove(monthName);
+            FlowMonth m = flowTracker.getMonth(monthName);
+            FlowDay d = flowTracker.getDay(monthName, dayName);
+            m.deleteFlowDay(d);
+            if (flowTracker.emptyMonth(monthName)) {
+                flowTracker.deleteMonth(monthName);
                 System.out.println("this flow day has been successfully deleted");
             }
         } else {
@@ -226,12 +227,8 @@ public class FlowApp {
             String monthName = input.next();
             String monthNamePattern = "\\d\\d\\/\\d\\d\\d\\d";
             if (Pattern.matches(monthNamePattern, monthName)) {
-                FlowDay newFlowDay = new FlowDay(dateName);
-                FlowMonth newFlowMonth = new FlowMonth(monthName);
-                flowMonthYearMap.putIfAbsent(monthName, newFlowMonth);
-                flowMonthYearMap.get(monthName).addFlowDay(newFlowDay);
                 displayInputMenu();
-                helpAttributes(newFlowDay);
+                helpAttributes(flowTracker.addEntry(dateName, monthName));
             } else {
                 System.out.println("date is not properly formatted. please try again :)");
                 enterFlowDay();
@@ -267,24 +264,28 @@ public class FlowApp {
     // EFFECTS: allows user to access previously logged days
     private void viewPreviousFlowDays() {
         System.out.println("your previously logged months:");
-        for (String monthYear : flowMonthYearMap.keySet()) {
-            System.out.println(monthYear);
-        }
-        System.out.println("please enter the month and year you would like to access as MM/YYYY");
-        String monthName = input.next();
-        String monthNamePattern = "\\d\\d\\/\\d\\d\\d\\d";
-        if (Pattern.matches(monthNamePattern, monthName)) {
-            monthExists(monthName);
+        if (flowTracker.getKeys().isEmpty()) {
+            System.out.println("You have not logged any months yet!");
         } else {
-            System.out.println("date is not properly formatted. please try again :)");
-            viewPreviousFlowDays();
+            for (String monthYear : flowTracker.getKeys()) {
+                System.out.println(monthYear);
+            }
+            System.out.println("please enter the month and year you would like to access as MM/YYYY");
+            String monthName = input.next();
+            String monthNamePattern = "\\d\\d\\/\\d\\d\\d\\d";
+            if (Pattern.matches(monthNamePattern, monthName)) {
+                monthExists(monthName);
+            } else {
+                System.out.println("date is not properly formatted. please try again :)");
+                viewPreviousFlowDays();
+            }
         }
     }
 
     // EFFECTS: checks to see if the entered month and entered date exists in the hashmap
     private void monthExists(String monthName) {
-        if (flowMonthYearMap.containsKey(monthName)) {
-            for (FlowDay flowDay : flowMonthYearMap.get(monthName).getFlowDays()) {
+        if (flowTracker.containsMonth(monthName)) {
+            for (FlowDay flowDay : flowTracker.getFlowDaysFT(monthName)) {
                 System.out.println("your previously logged days in the chosen month:");
                 System.out.println(flowDay.getDayName());
             }
