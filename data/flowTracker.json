@@ -1,40 +1,12 @@
 {
     "tracker name": "My flow tracker",
-    "months tracked": [
-        {
-            "month": "05/2022",
-            "logged days": [{
-                "symptom": "",
-                "mood": "unmotivated",
-                "day": "05/05/2022",
-                "flow": "light"
-            }]
-        },
-        {
-            "month": "03/2022",
-            "logged days": [
-                {
-                    "symptom": "cramps",
-                    "mood": "happy",
-                    "day": "03/03/2022",
-                    "flow": "heavy"
-                },
-                {
-                    "symptom": "headaches",
-                    "mood": "angry",
-                    "day": "20/03/2022",
-                    "flow": "spotting"
-                }
-            ]
-        },
-        {
-            "month": "04/2022",
-            "logged days": [{
-                "symptom": "food cravings",
-                "mood": "sad",
-                "day": "04/04/2022",
-                "flow": "light"
-            }]
-        }
-    ]
+    "months tracked": [{
+        "month": "02/2022",
+        "logged days": [{
+            "symptom": "headaches",
+            "mood": "",
+            "day": "02/02/2022",
+            "flow": ""
+        }]
+    }]
 }

@@ -21,6 +21,8 @@ public class JsonReader {
         this.source = source;
     }
 
+    // Method taken from JSONReader class in
+    // https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
     // EFFECTS: reads user from file and returns it;
     // throws IOException if an error occurs reading data from file
     public FlowTracker read() throws IOException {
@@ -29,6 +31,8 @@ public class JsonReader {
         return parseFlowTracker(jsonObject);
     }
 
+    // Method taken from JSONReader class in
+    // https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
     // EFFECTS: reads source file as string and returns it
     private String readFile(String source) throws IOException {
         StringBuilder contentBuilder = new StringBuilder();
@@ -40,6 +44,8 @@ public class JsonReader {
         return contentBuilder.toString();
     }
 
+    // Method taken from JSONReader class in
+    // https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
     // EFFECTS: parses FlowTracker from JSON object and returns it
     private FlowTracker parseFlowTracker(JSONObject jsonObject) {
         String name = jsonObject.getString("tracker name");

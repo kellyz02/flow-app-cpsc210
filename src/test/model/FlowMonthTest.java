@@ -1,7 +1,7 @@
-
 package model;
 
-
+import model.FlowDay;
+import model.FlowMonth;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

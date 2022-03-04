@@ -1,11 +1,8 @@
 package persistence;
 
-
 import model.FlowMonth;
 import model.FlowTracker;
 import org.junit.jupiter.api.Test;
-import persistence.JsonReader;
-import persistence.JsonTest;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,6 +15,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class JsonReaderTest extends JsonTest {
 
+    // Test taken from JSONReaderTest class in
+    // https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
     @Test
     void testReaderNonExistentFile() {
         JsonReader reader = new JsonReader("./data/noSuchFile.json");
@@ -29,6 +28,8 @@ public class JsonReaderTest extends JsonTest {
         }
     }
 
+    // Test taken from JSONReaderTest class in
+    // https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
     @Test
     void testReaderEmptyTracker() {
         JsonReader reader = new JsonReader("./data/testReaderEmptyTracker.json");

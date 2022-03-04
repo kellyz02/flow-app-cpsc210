@@ -45,6 +45,8 @@ public class JsonWriterTest extends JsonTest {
         fd3.enterFlow("light");
     }
 
+    // Test taken from JSONWriterTest class in
+    // https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
     @Test
     void testWriterInvalidFile() {
         try {
@@ -56,6 +58,8 @@ public class JsonWriterTest extends JsonTest {
         }
     }
 
+    // Test taken from JSONWriterTest class in
+    // https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
     @Test
     void testWriterEmptyTracker() {
         try {
