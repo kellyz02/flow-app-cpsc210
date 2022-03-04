@@ -4,6 +4,8 @@ package persistence;
 import model.FlowMonth;
 import model.FlowTracker;
 import org.junit.jupiter.api.Test;
+import persistence.JsonReader;
+import persistence.JsonTest;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,7 +30,7 @@ public class JsonReaderTest extends JsonTest {
     }
 
     @Test
-    void testReaderEmptyWorkRoom() {
+    void testReaderEmptyTracker() {
         JsonReader reader = new JsonReader("./data/testReaderEmptyTracker.json");
         try {
             FlowTracker ft = reader.read();
@@ -40,7 +42,7 @@ public class JsonReaderTest extends JsonTest {
     }
 
     @Test
-    void testReaderGeneralWorkRoom() {
+    void testReaderGeneralTracker() {
         JsonReader reader = new JsonReader("./data/testReaderGeneralTracker.json");
         try {
             FlowTracker ft = reader.read();

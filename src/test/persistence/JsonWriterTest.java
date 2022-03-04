@@ -57,7 +57,7 @@ public class JsonWriterTest extends JsonTest {
     }
 
     @Test
-    void testWriterEmptyWorkroom() {
+    void testWriterEmptyTracker() {
         try {
             JsonWriter writer = new JsonWriter("./data/testWriterEmptyTracker.json");
             writer.open();
@@ -74,7 +74,7 @@ public class JsonWriterTest extends JsonTest {
     }
 
     @Test
-    void testWriterGeneralWorkroom() {
+    void testWriterGeneralTracker() {
         try {
             fm1.addFlowDay(fd1);
             fm1.addFlowDay(fd2);
