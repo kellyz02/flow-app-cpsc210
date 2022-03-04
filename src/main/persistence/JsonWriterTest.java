@@ -94,16 +94,22 @@ public class JsonWriterTest extends JsonTest {
                 monthList.add(m);
             }
             assertEquals(2, monthList.size());
-            checkMonth("03/2022", monthList.get(0).getFlowDays(), monthList.get(0));
-            checkDay("03/03/2022", "cramps", "happy", "heavy",
-                    monthList.get(0).getFlowDays().get(0));
-            checkDay("20/03/2022", "headaches", "angry", "spotting",
-                    monthList.get(0).getFlowDays().get(1));
-            checkMonth("04/2022", monthList.get(1).getFlowDays(), monthList.get(1));
-            checkDay("04/04/2022", "food cravings", "sad", "light",
-                    monthList.get(1).getFlowDays().get(0));
+            checkMonthDay(monthList);
         } catch (IOException e) {
             fail("Exception should not have been thrown");
         }
     }
+
+    // EFFECTS: helper method for testWriterGeneralWorkroom
+    private void checkMonthDay(List<FlowMonth> monthList) {
+        checkMonth("03/2022", monthList.get(0).getFlowDays(), monthList.get(0));
+        checkDay("03/03/2022", "cramps", "happy", "heavy",
+                monthList.get(0).getFlowDays().get(0));
+        checkDay("20/03/2022", "headaches", "angry", "spotting",
+                monthList.get(0).getFlowDays().get(1));
+        checkMonth("04/2022", monthList.get(1).getFlowDays(), monthList.get(1));
+        checkDay("04/04/2022", "food cravings", "sad", "light",
+                monthList.get(1).getFlowDays().get(0));
+    }
+
 }

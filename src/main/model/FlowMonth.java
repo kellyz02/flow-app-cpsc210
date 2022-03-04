@@ -5,8 +5,6 @@ import org.json.JSONObject;
 import persistence.Writable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 // Represents a month that contains a list of Flow Days
 public class FlowMonth implements Writable {

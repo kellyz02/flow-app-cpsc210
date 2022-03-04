@@ -1,10 +1,8 @@
 package model;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
 
-import java.util.ArrayList;
 
 // Represents a day on the menstrual cycle that has assigned date, flow, moods, and symptoms
 public class FlowDay implements Writable {
@@ -62,26 +60,4 @@ public class FlowDay implements Writable {
         json.put("symptom", symptom);
         return json;
     }
-
-//    // EFFECTS: returns moods in this FlowDay as a JSON array
-//    private JSONArray moodsToJson() {
-//        JSONArray jsonArray = new JSONArray();
-//
-//        for (String m : mood) {
-//            jsonArray.put(m);
-//        }
-//
-//        return jsonArray;
-//    }
-//
-//    // EFFECTS: returns symptoms in this FlowDay as a JSON array
-//    private JSONArray symptomsToJson() {
-//        JSONArray jsonArray = new JSONArray();
-//
-//        for (String s : symptom) {
-//            jsonArray.put(s);
-//        }
-//
-//        return jsonArray;
-//    }
 }

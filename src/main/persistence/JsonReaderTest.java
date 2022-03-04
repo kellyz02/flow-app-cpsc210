@@ -20,7 +20,7 @@ public class JsonReaderTest extends JsonTest {
     void testReaderNonExistentFile() {
         JsonReader reader = new JsonReader("./data/noSuchFile.json");
         try {
-            FlowTracker tr = reader.read();
+            FlowTracker ft = reader.read();
             fail("IOException expected");
         } catch (IOException e) {
             // pass
@@ -31,9 +31,9 @@ public class JsonReaderTest extends JsonTest {
     void testReaderEmptyWorkRoom() {
         JsonReader reader = new JsonReader("./data/testReaderEmptyTracker.json");
         try {
-            FlowTracker tr = reader.read();
-            assertEquals("My flow tracker", tr.getName());
-            assertEquals(0, tr.getMonths().size());
+            FlowTracker ft = reader.read();
+            assertEquals("My flow tracker", ft.getName());
+            assertEquals(0, ft.getMonths().size());
         } catch (IOException e) {
             fail("Couldn't read from file");
         }
@@ -43,9 +43,9 @@ public class JsonReaderTest extends JsonTest {
     void testReaderGeneralWorkRoom() {
         JsonReader reader = new JsonReader("./data/testReaderGeneralTracker.json");
         try {
-            FlowTracker tr = reader.read();
-            assertEquals("My flow tracker", tr.getName());
-            Collection<FlowMonth> months = tr.getMonths();
+            FlowTracker ft = reader.read();
+            assertEquals("My flow tracker", ft.getName());
+            Collection<FlowMonth> months = ft.getMonths();
             List<FlowMonth> monthList = new ArrayList<>();
             for (FlowMonth m : months) {
                 monthList.add(m);
