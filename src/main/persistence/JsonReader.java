@@ -42,10 +42,29 @@ public class JsonReader {
 
     // EFFECTS: parses FlowTracker from JSON object and returns it
     private FlowTracker parseFlowTracker(JSONObject jsonObject) {
-        String name = jsonObject.getString("name");
+        String name = jsonObject.getString("tracker name");
         FlowTracker ft = new FlowTracker(name);
         addMonths(ft, jsonObject);
         return ft;
+    }
+
+    // MODIFIES: ft
+    // EFFECTS: parses months from JSON object and adds it to the tracker
+    private void addMonths(FlowTracker ft, JSONObject jsonObject) {
+        JSONArray jsonArray = jsonObject.getJSONArray("months tracked");
+        for (Object json : jsonArray) {
+            JSONObject nextMonth = (JSONObject) json;
+            addMonth(ft, nextMonth);
+        }
+    }
+
+    // MODIFIES: ft
+    // EFFECTS: parses month from JSON object and adds it to the tracker
+    private void addMonth(FlowTracker ft, JSONObject jsonObject) {
+        String name = jsonObject.getString("month");
+        FlowMonth month = new FlowMonth(name);
+        ft.addMonth(month, name);
+        addDays(month, jsonObject);
     }
 
     // MODIFIES: m
@@ -73,24 +92,6 @@ public class JsonReader {
     }
 
 
-    // MODIFIES: tr
-    // EFFECTS: parses months from JSON object and adds it to the tracker
-    private void addMonths(FlowTracker tr, JSONObject jsonObject) {
-        JSONArray jsonArray = jsonObject.getJSONArray("months tracked");
-        for (Object json : jsonArray) {
-            JSONObject nextMonth = (JSONObject) json;
-            addMonth(tr, nextMonth);
-        }
-    }
-
-    // MODIFIES: tr
-    // EFFECTS: parses month from JSON object and adds it to the tracker
-    private void addMonth(FlowTracker tr, JSONObject jsonObject) {
-        String name = jsonObject.getString("month");
-        FlowMonth month = new FlowMonth(name);
-        tr.addMonth(month, month.getMonthName());
-        addDays(month, jsonObject);
-    }
 
 }
 

@@ -70,7 +70,7 @@ public class FlowMonth implements Writable {
         return json;
     }
 
-    // EFFECTS: returns things in this workroom as a JSON array
+    // EFFECTS: returns days in the month as a JSON array
     private JSONArray flowDaysToJson() {
         JSONArray jsonArray = new JSONArray();
 

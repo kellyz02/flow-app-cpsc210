@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 
 // Menstrual cycle tracker application
 public class FlowApp {
-    private static final String JSON_STORE = "./data/flowTracker/json";
+    private static final String JSON_STORE = "./data/flowTracker.json";
     private Scanner input;
     private FlowTracker flowTracker;
     private JsonWriter jsonWriter;
@@ -22,7 +22,7 @@ public class FlowApp {
     // EFFECTS: runs the "FlowApp" application
     public FlowApp() throws FileNotFoundException {
         input = new Scanner(System.in);
-        flowTracker = new FlowTracker("Your FlowTracker");
+        flowTracker = new FlowTracker("My flow tracker");
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
         runFlowApp();

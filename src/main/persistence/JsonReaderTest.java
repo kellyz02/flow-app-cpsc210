@@ -56,7 +56,7 @@ public class JsonReaderTest extends JsonTest {
                     monthList.get(0).getFlowDays().get(0));
             checkDay("20/03/2022", "headaches", "angry", "spotting",
                     monthList.get(0).getFlowDays().get(1));
-            checkMonth("04/2022", monthList.get(1).getFlowDays(), monthList.get(0));
+            checkMonth("04/2022", monthList.get(1).getFlowDays(), monthList.get(1));
             checkDay("04/04/2022", "food cravings", "sad", "light",
                     monthList.get(1).getFlowDays().get(0));
 
