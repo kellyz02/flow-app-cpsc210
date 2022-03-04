@@ -2,17 +2,17 @@ package model;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import persistence.Writable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 // Represents a tracker that has a collection of months with tracked days
-public class FlowTracker {
+public class FlowTracker implements Writable {
+    private String name;
     private Map<String, FlowMonth> flowMonthYearMap;
 
-    public FlowTracker() {
+    public FlowTracker(String name) {
+        this.name = name;
         flowMonthYearMap = new HashMap<>();
     }
 
@@ -24,8 +24,34 @@ public class FlowTracker {
         return newFlowDay;
     }
 
+    public void addMonth(FlowMonth month, String monthName) {
+        flowMonthYearMap.putIfAbsent(monthName, month);
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("months tracked", flowMonthsToJson());
+        return json;
+    }
+
+    // EFFECTS: returns things in this workroom as a JSON array
+    private JSONArray flowMonthsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (FlowMonth fm : getMonths()) {
+            jsonArray.put(fm.toJson());
+        }
+        return jsonArray;
+    }
+
     public FlowMonth getMonth(String monthName) {
         return flowMonthYearMap.get(monthName);
+    }
+
+    public Collection<FlowMonth> getMonths() {
+        return flowMonthYearMap.values();
     }
 
     public FlowDay getDay(String monthName, String dayName) {
@@ -50,6 +76,10 @@ public class FlowTracker {
 
     public Boolean containsMonth(String monthName) {
         return flowMonthYearMap.containsKey(monthName);
+    }
+
+    public String getName() {
+        return this.name;
     }
 
 }

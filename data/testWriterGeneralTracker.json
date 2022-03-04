@@ -1,0 +1,35 @@
+{
+  "months tracked": [
+    {
+      "month": [
+        {
+          "name": "03/2022",
+          "logged days": [
+            {
+              "day": "03/03/2022",
+              "mood": "happy",
+              "symptom": "cramps",
+              "flow": "heavy"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "month": [
+        {
+          "name": "04/2022",
+          "logged days": [
+            {
+              "day": "04/04/2022",
+              "mood": "sad",
+              "symptom": "food cravings",
+              "flow": "light"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "name": "Your FlowTracker"
+}

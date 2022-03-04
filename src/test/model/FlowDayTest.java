@@ -18,10 +18,10 @@ class FlowDayTest {
     void testConstructor() {
         assertEquals("14", testFlowDay.getDayName());
         assertEquals("", testFlowDay.getFlow());
-        ArrayList<String> moods = testFlowDay.getMoods();
-        assertTrue(moods.isEmpty());
-        ArrayList<String> symptoms = testFlowDay.getSymptoms();
-        assertTrue(symptoms.isEmpty());
+        String mood = testFlowDay.getMood();
+        assertEquals("", mood);
+        String symptom = testFlowDay.getSymptom();
+        assertEquals("", symptom);
     }
 
     @Test
@@ -33,26 +33,22 @@ class FlowDayTest {
     @Test
     void testEnterMood() {
         testFlowDay.enterMood("Happy");
-        ArrayList<String> moods = testFlowDay.getMoods();
-        assertEquals(1, moods.size());
+        String mood = testFlowDay.getMood();
+        assertEquals("Happy", mood);
 
         testFlowDay.enterMood("Melancholy");
-        assertEquals(2, moods.size());
-
-        testFlowDay.enterMood("Happy"); // shouldn't be able to repeat
-        assertEquals(2, moods.size());
+        String mood1 = testFlowDay.getMood();
+        assertEquals("Melancholy", mood1);
     }
 
     @Test
     void testEnterSymptom() {
         testFlowDay.enterSymptom("Cramps");
-        ArrayList<String> symptoms = testFlowDay.getSymptoms();
-        assertEquals(1, symptoms.size());
+        String symptom = testFlowDay.getSymptom();
+        assertEquals("Cramps", symptom);
 
         testFlowDay.enterSymptom("Headaches");
-        assertEquals(2, symptoms.size());
-
-        testFlowDay.enterSymptom("Cramps");
-        assertEquals(2, symptoms.size());
+        String symptom1 = testFlowDay.getSymptom();
+        assertEquals("Headaches", symptom1);
     }
 }

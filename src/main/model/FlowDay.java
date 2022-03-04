@@ -1,20 +1,24 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 
 // Represents a day on the menstrual cycle that has assigned date, flow, moods, and symptoms
-public class FlowDay {
+public class FlowDay implements Writable {
     private String dayName;                    // string identifier for date
-    private ArrayList<String> moods;           // select from: happy, sad, moody, angry, unmotivated
+    private String mood;           // select from: happy, sad, moody, angry, unmotivated
     private String flow;                       // flow measured by spotting, light, medium, heavy
-    private ArrayList<String> symptoms;        // select from cramps, fatigue, food cravings, headaches, no symptoms
+    private String symptom;        // select from cramps, fatigue, food cravings, headaches, no symptoms
 
     // EFFECTS: constructs a FlowDay with a given date, empty moods list, flow field, and empty symptoms list
     public FlowDay(String day) {
         this.dayName = day;
-        this.moods = new ArrayList<>();
+        this.mood = "";
         this.flow = "";
-        this.symptoms = new ArrayList<>();
+        this.symptom = "";
     }
 
     //EFFECTS: enters a string into the flow field
@@ -24,31 +28,60 @@ public class FlowDay {
 
     // EFFECTS: enters a string into the moods list
     public void enterMood(String mood) {
-        if (!moods.contains(mood)) {
-            moods.add(mood);
-        }
+        this.mood = mood;
     }
 
     // EFFECTS: enters a symptom into the symptom list
     public void enterSymptom(String symptom) {
-        if (!symptoms.contains(symptom)) {
-            symptoms.add(symptom);
-        }
+        this.symptom = symptom;
     }
 
-    public ArrayList<String> getMoods() {
-        return moods;
+    public String getMood() {
+        return mood;
     }
 
     public String getFlow() {
         return flow;
     }
 
-    public ArrayList<String> getSymptoms() {
-        return symptoms;
+    public String getSymptom() {
+        return symptom;
     }
 
     public String getDayName() {
         return dayName;
     }
+
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("day", dayName);
+        json.put("mood", mood);
+        json.put("flow", flow);
+        json.put("symptom", symptom);
+        return json;
+    }
+
+//    // EFFECTS: returns moods in this FlowDay as a JSON array
+//    private JSONArray moodsToJson() {
+//        JSONArray jsonArray = new JSONArray();
+//
+//        for (String m : mood) {
+//            jsonArray.put(m);
+//        }
+//
+//        return jsonArray;
+//    }
+//
+//    // EFFECTS: returns symptoms in this FlowDay as a JSON array
+//    private JSONArray symptomsToJson() {
+//        JSONArray jsonArray = new JSONArray();
+//
+//        for (String s : symptom) {
+//            jsonArray.put(s);
+//        }
+//
+//        return jsonArray;
+//    }
 }

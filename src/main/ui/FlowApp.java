@@ -3,17 +3,28 @@ package ui;
 import model.FlowDay;
 import model.FlowMonth;
 import model.FlowTracker;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 // Menstrual cycle tracker application
 public class FlowApp {
+    private static final String JSON_STORE = "./data/flowTracker/json";
     private Scanner input;
-    private FlowTracker flowTracker = new FlowTracker();
+    private FlowTracker flowTracker;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     // EFFECTS: runs the "FlowApp" application
-    public FlowApp() {
+    public FlowApp() throws FileNotFoundException {
+        input = new Scanner(System.in);
+        flowTracker = new FlowTracker("Your FlowTracker");
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
         runFlowApp();
     }
 
@@ -54,6 +65,10 @@ public class FlowApp {
             enterFlowDay();
         } else if (command.equals("v")) {
             viewPreviousFlowDays();
+        } else if (command.equals("s")) {
+            saveFlowTracker();
+        } else if (command.equals("l")) {
+            loadFlowTracker();
         } else {
             System.out.println("selection not valid!");
         }
@@ -157,6 +172,8 @@ public class FlowApp {
         System.out.println("\nWelcome to FlowApp!");
         System.out.println("\te -> enter a new flow day");
         System.out.println("\tv -> view or delete previously logged flow days");
+        System.out.println("\ts -> save work room to file");
+        System.out.println("\tl -> load work room from file");
         System.out.println("\tq -> quit FlowApp");
     }
 
@@ -245,22 +262,6 @@ public class FlowApp {
         processInputCommand(choose, newFlowDay);
     }
 
-
-    /*
-    // MODIFIES: this
-    // EFFECTS: prompts user to select their attributes in the different fields to add to the new FlowDay
-    private void addAttributes(FlowDay newFlowDay) {
-        displayFeelingsMenu();
-        String feeling = input.next();
-        processFeelingCommand(feeling, newFlowDay);
-        displayFlowMenu();
-        String flow = input.next();
-        processFlowCommand(flow, newFlowDay);
-        displaySymptomsMenu();
-        String symptom = input.next();
-        processSymptomsCommand(symptom, newFlowDay);
-    }
-     */
     // EFFECTS: allows user to access previously logged days
     private void viewPreviousFlowDays() {
         System.out.println("your previously logged months:");
@@ -305,23 +306,46 @@ public class FlowApp {
 
     // EFFECTS: returns the attributes for the selected FlowDay
     private void printAttributes1(FlowDay oldDay) {
-        String listMood = String.join(" + ", oldDay.getMoods());
-        String listSymptom = String.join(" + ", oldDay.getSymptoms());
-        if (oldDay.getMoods().isEmpty()) {
-            if (oldDay.getSymptoms().isEmpty()) {
+        String listMood = String.join(" + ", oldDay.getMood());
+        String listSymptom = String.join(" + ", oldDay.getSymptom());
+        if (oldDay.getMood().isEmpty()) {
+            if (oldDay.getSymptom().isEmpty()) {
                 System.out.println("On " + oldDay.getDayName() + ", your flow was " + oldDay.getFlow());
             } else {
                 System.out.println("On " + oldDay.getDayName() + ", your flow was " + oldDay.getFlow()
                         + ". You experienced " + listSymptom + ".");
             }
         } else {
-            if (oldDay.getSymptoms().isEmpty()) {
+            if (oldDay.getSymptom().isEmpty()) {
                 System.out.println("On " + oldDay.getDayName() + ", your flow was " + oldDay.getFlow()
                         + ". You were feeling " + listMood + ".");
             } else {
                 System.out.println("On " + oldDay.getDayName() + ", your flow was " + oldDay.getFlow()
                         + ". You were feeling " + listMood + ". You experienced " + listSymptom + ".");
             }
+        }
+    }
+
+    // EFFECTS: saves the workroom to file
+    private void saveFlowTracker() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(flowTracker);
+            jsonWriter.close();
+            System.out.println("Saved " + flowTracker.getName() + " to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads workroom from file
+    private void loadFlowTracker() {
+        try {
+            flowTracker = jsonReader.read();
+            System.out.println("Loaded " + flowTracker.getName() + " from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
         }
     }
 }
