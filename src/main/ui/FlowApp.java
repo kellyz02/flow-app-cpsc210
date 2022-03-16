@@ -233,29 +233,6 @@ public class FlowApp {
         helpAttributes(newFlowDay);
     }
 
-//    // MODIFIES: this
-//    // EFFECTS: creates a new FlowDay with its attributes or edits pre-existing one
-//    private void enterFlowDay() {
-//        System.out.println("please enter the date of the flow day as DD/MM/YYYY");
-//        String dateName = input.next();
-//        String dateNamePattern = "\\d\\d/\\d\\d\\/\\d\\d\\d\\d";
-//        if (Pattern.matches(dateNamePattern, dateName)) {
-//            System.out.println("please enter the month and year of the flow day as MM/YYYY");
-//            String monthName = input.next();
-//            String monthNamePattern = "\\d\\d\\/\\d\\d\\d\\d";
-//            if (Pattern.matches(monthNamePattern, monthName)) {
-//                displayInputMenu();
-//                helpAttributes(flowTracker.addEntry(dateName, monthName));
-//            } else {
-//                System.out.println("date is not properly formatted. please try again :)");
-//                enterFlowDay();
-//            }
-//        } else {
-//            System.out.println("date is not properly formatted. please try again :)");
-//            enterFlowDay();
-//        }
-//    }
-
     // MODIFIES: this
     // EFFECTS: creates a new FlowDay with its attributes or edits pre-existing one
     private void enterFlowDay() {
