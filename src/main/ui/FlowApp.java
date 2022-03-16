@@ -233,6 +233,29 @@ public class FlowApp {
         helpAttributes(newFlowDay);
     }
 
+//    // MODIFIES: this
+//    // EFFECTS: creates a new FlowDay with its attributes or edits pre-existing one
+//    private void enterFlowDay() {
+//        System.out.println("please enter the date of the flow day as DD/MM/YYYY");
+//        String dateName = input.next();
+//        String dateNamePattern = "\\d\\d/\\d\\d\\/\\d\\d\\d\\d";
+//        if (Pattern.matches(dateNamePattern, dateName)) {
+//            System.out.println("please enter the month and year of the flow day as MM/YYYY");
+//            String monthName = input.next();
+//            String monthNamePattern = "\\d\\d\\/\\d\\d\\d\\d";
+//            if (Pattern.matches(monthNamePattern, monthName)) {
+//                displayInputMenu();
+//                helpAttributes(flowTracker.addEntry(dateName, monthName));
+//            } else {
+//                System.out.println("date is not properly formatted. please try again :)");
+//                enterFlowDay();
+//            }
+//        } else {
+//            System.out.println("date is not properly formatted. please try again :)");
+//            enterFlowDay();
+//        }
+//    }
+
     // MODIFIES: this
     // EFFECTS: creates a new FlowDay with its attributes or edits pre-existing one
     private void enterFlowDay() {
@@ -240,16 +263,10 @@ public class FlowApp {
         String dateName = input.next();
         String dateNamePattern = "\\d\\d/\\d\\d\\/\\d\\d\\d\\d";
         if (Pattern.matches(dateNamePattern, dateName)) {
-            System.out.println("please enter the month and year of the flow day as MM/YYYY");
-            String monthName = input.next();
-            String monthNamePattern = "\\d\\d\\/\\d\\d\\d\\d";
-            if (Pattern.matches(monthNamePattern, monthName)) {
-                displayInputMenu();
-                helpAttributes(flowTracker.addEntry(dateName, monthName));
-            } else {
-                System.out.println("date is not properly formatted. please try again :)");
-                enterFlowDay();
-            }
+            String[] monthNameArray = dateName.split("/",2);
+            String monthName = monthNameArray[1];
+            displayInputMenu();
+            helpAttributes(flowTracker.addEntry(dateName, monthName));
         } else {
             System.out.println("date is not properly formatted. please try again :)");
             enterFlowDay();
@@ -286,8 +303,8 @@ public class FlowApp {
     // EFFECTS: checks to see if the entered month and entered date exists in the hashmap
     private void monthExists(String monthName) {
         if (flowTracker.containsMonth(monthName)) {
+            System.out.println("your previously logged days in the chosen month:");
             for (FlowDay flowDay : flowTracker.getFlowDaysFT(monthName)) {
-                System.out.println("your previously logged days in the chosen month:");
                 System.out.println(flowDay.getDayName());
             }
             System.out.println("please enter the flow day you would like to view/delete in detail as DD/MM/YYYY");
@@ -297,6 +314,9 @@ public class FlowApp {
                 displayViewDeleteMenu();
                 String viewDelete = input.next();
                 processViewDeleteCommand(viewDelete, monthName, dayName);
+            } else {
+                System.out.println("date is not properly formatted. please try again :)");
+                monthExists(monthName);
             }
         } else {
             System.out.println("nothing has been logged for the entered date. please try again :)");
