@@ -1,12 +1,20 @@
 {
     "tracker name": "My flow tracker",
     "months tracked": [{
-        "month": "02/2022",
-        "logged days": [{
-            "symptom": "headaches",
-            "mood": "",
-            "day": "02/02/2022",
-            "flow": ""
-        }]
+        "month": "03/2022",
+        "logged days": [
+            {
+                "symptom": "food cravings",
+                "mood": "unmotivated",
+                "day": "22/03/2022",
+                "flow": "light"
+            },
+            {
+                "symptom": "food cravings",
+                "mood": "unmotivated",
+                "day": "10/03/2022",
+                "flow": "medium"
+            }
+        ]
     }]
 }
