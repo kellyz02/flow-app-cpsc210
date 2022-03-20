@@ -1,3 +1,4 @@
+/*
 package ui;
 
 import model.FlowDay;
@@ -172,8 +173,8 @@ public class FlowApp {
         System.out.println("\nWelcome to FlowApp!");
         System.out.println("\te -> enter a new flow day");
         System.out.println("\tv -> view or delete previously logged flow days");
-        System.out.println("\ts -> save work room to file");
-        System.out.println("\tl -> load work room from file");
+        System.out.println("\ts -> save tracked days to file");
+        System.out.println("\tl -> load tracked days from file");
         System.out.println("\tq -> quit FlowApp");
     }
 
@@ -346,3 +347,5 @@ public class FlowApp {
         }
     }
 }
+
+ */
