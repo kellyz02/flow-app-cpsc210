@@ -5,12 +5,16 @@ import model.FlowTracker;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
+
+import static java.awt.Color.black;
 
 public class EntryUI extends JFrame implements ActionListener {
     private static final int HEIGHT = 400;
@@ -50,11 +54,8 @@ public class EntryUI extends JFrame implements ActionListener {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         ((JPanel) getContentPane()).setBorder(new EmptyBorder(13, 13, 13, 13));
         setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
+        addPanels();
         ft = new FlowTracker("my flow tracker");
-        dateEntry = new JPanel(new FlowLayout());
-        flowEntry = new JPanel(new FlowLayout());
-        moodEntry = new JPanel(new FlowLayout());
-        symptomEntry = new JPanel(new FlowLayout());
         flowChoices();
         moodChoices();
         symptomChoices();
@@ -66,12 +67,18 @@ public class EntryUI extends JFrame implements ActionListener {
         add(moodEntry);
         add(symptomEntry);
         add(finishEntry);
+        add(loggedDay);
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
     }
 
-
+    public void addPanels() {
+        dateEntry = new JPanel(new FlowLayout());
+        flowEntry = new JPanel(new FlowLayout());
+        moodEntry = new JPanel(new FlowLayout());
+        symptomEntry = new JPanel(new FlowLayout());
+    }
 
     public void addButtons() {
         flowEntry.add(flow);
@@ -91,11 +98,18 @@ public class EntryUI extends JFrame implements ActionListener {
         symptomEntry.add(cravings);
         symptomEntry.add(none);
         dateEntry.add(date);
+        createField();
+        dateEntry.add(dateField);
+        finishEntry = new JButton("finish entry");
+        finishEntry.setActionCommand("finish entry");
+        finishEntry.addActionListener(this);
+        loggedDay = new JLabel();
+    }
+
+    public void createField() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate localDate = LocalDate.now();
         dateField = new JTextField(dtf.format(localDate));
-        dateEntry.add(dateField);
-        finishEntry = new JButton("finish entry");
     }
 
     public void labels() {
@@ -108,9 +122,13 @@ public class EntryUI extends JFrame implements ActionListener {
 
     public void flowChoices() {
         spotting = new JRadioButton("spotting");
+        spotting.setActionCommand("spotting");
         light = new JRadioButton("light");
+        light.setActionCommand("light");
         medium = new JRadioButton("medium");
+        medium.setActionCommand("medium");
         heavy = new JRadioButton("heavy");
+        heavy.setActionCommand("heavy");
         fc = new ButtonGroup();
         fc.add(spotting);
         fc.add(light);
@@ -120,9 +138,13 @@ public class EntryUI extends JFrame implements ActionListener {
 
     public void moodChoices() {
         happy = new JRadioButton("happy");
+        happy.setActionCommand("happy");
         sad = new JRadioButton("sad");
+        sad.setActionCommand("sad");
         angry = new JRadioButton("angry");
+        angry.setActionCommand("angry");
         unmotivated = new JRadioButton("unmotivated");
+        unmotivated.setActionCommand("angry");
         mc = new ButtonGroup();
         mc.add(happy);
         mc.add(sad);
@@ -132,10 +154,15 @@ public class EntryUI extends JFrame implements ActionListener {
 
     public void symptomChoices() {
         cramps = new JRadioButton("cramps");
+        cramps.setActionCommand("cramps");
         fatigue = new JRadioButton("fatigue");
+        fatigue.setActionCommand("fatigue");
         headaches = new JRadioButton("headaches");
+        headaches.setActionCommand("headaches");
         cravings = new JRadioButton("food cravings");
+        cravings.setActionCommand("food cravings");
         none = new JRadioButton("no symptoms");
+        none.setActionCommand("none");
         sc = new ButtonGroup();
         sc.add(cramps);
         sc.add(fatigue);
@@ -144,7 +171,8 @@ public class EntryUI extends JFrame implements ActionListener {
         sc.add(none);
     }
 
-    public void actionPerformed(ActionEvent e) throws IncorrectDateException {
+
+    public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("finish entry")) {
             String dateNamePattern = "\\d\\d/\\d\\d\\/\\d\\d\\d\\d";
             String enteredDate = dateField.getText();
@@ -154,11 +182,11 @@ public class EntryUI extends JFrame implements ActionListener {
                 FlowDay currentDay = ft.addEntry(enteredDate, monthName);
                 addAttributes(currentDay);
                 printAttributes(currentDay);
-                add(loggedDay);
-            } else
-
+            } else {
+                loggedDay.setText("date incorrectly formatted! please try again");
+            }
         }
-
+        add(loggedDay);
     }
 
     public void addAttributes(FlowDay flowDay) {
@@ -181,13 +209,13 @@ public class EntryUI extends JFrame implements ActionListener {
 
     public void processMoodCommand(String command, FlowDay flowDay) {
         if (command.equals("happy")) {
-            flowDay.enterFlow("happy");
+            flowDay.enterMood("happy");
         } else if (command.equals("sad")) {
-            flowDay.enterFlow("sad");
+            flowDay.enterMood("sad");
         } else if (command.equals("angry")) {
-            flowDay.enterFlow("angry");
+            flowDay.enterMood("angry");
         } else if (command.equals("unmotivated")) {
-            flowDay.enterFlow("unmotivated");
+            flowDay.enterMood("unmotivated");
         }
     }
 
@@ -209,11 +237,11 @@ public class EntryUI extends JFrame implements ActionListener {
         String returnAttributes = "On " + currentDay.getDayName() + ", your flow was " + currentDay.getFlow()
                         + ". You were feeling " + currentDay.getMood() + ". You experienced "
                         + currentDay.getSymptom() + ".";
-        loggedDay = new JLabel(returnAttributes);
+        loggedDay.setText(returnAttributes);
     }
-
 
     public static void main(String[] args) {
         new EntryUI();
     }
+
 }
