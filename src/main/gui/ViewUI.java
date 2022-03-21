@@ -17,9 +17,13 @@ public class ViewUI extends JFrame implements ActionListener {
     private JList monthList;
     private JLabel errorMessage;
     private JLabel daysInMonth;
-    private JPanel panel;
-    private JSplitPane splitPane;
+    private JPanel loggedMonths;
+    private JPanel loggedDays;
+    private JPanel viewEntry;
+    private JSplitPane monthSplitPane;
+    private JSplitPane daySplitPane;
     private DefaultListModel<String> monthObjectList;
+    private FlowTracker flowTracker;
 
     public ViewUI(FlowTracker flowTracker) {
         super("view previously logged months");
@@ -27,26 +31,29 @@ public class ViewUI extends JFrame implements ActionListener {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         ((JPanel) getContentPane()).setBorder(new EmptyBorder(13, 13, 13, 13));
         setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
+        this.flowTracker = flowTracker;
+        monthSplitPane = new JSplitPane();
+        loggedMonths = new JPanel();
+        daySplitPane = new JSplitPane();
+        loggedDays = new JPanel();
+        viewEntry = new JPanel();
         addErrorMessage();
-        monthsPanel(flowTracker);
-        add(splitPane);
+        createSplitPane();
+        add(monthSplitPane);
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
 
-
-
     }
 
     public void addErrorMessage() {
         errorMessage = new JLabel();
-        add(errorMessage);
+        loggedMonths.add(errorMessage);
     }
 
-    public void monthsPanel(FlowTracker flowTracker) {
+    public void createSplitPane() {
         monthObjectList = new DefaultListModel<>();
-        daysInMonth = new JLabel();
         if (flowTracker.getKeys().isEmpty()) {
             errorMessage.setText("you have not logged any days yet!");
         } else {
@@ -55,18 +62,47 @@ public class ViewUI extends JFrame implements ActionListener {
             }
         }
 
-        monthList = new JList(monthObjectList); //data has type Object[]
+        monthList = new JList(monthObjectList);
         monthList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         monthList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         monthList.setVisibleRowCount(-1);
 
-        JScrollPane listScroller = new JScrollPane(monthList);
-        listScroller.setPreferredSize(new Dimension(250, 80));
-        splitPane.setLeftComponent(listScroller);
-        panel.add(daysInMonth);
-        splitPane.setRightComponent(panel);
+
+        daySplitPane.setLeftComponent(loggedDays);
+        daySplitPane.setRightComponent(viewEntry);
+        monthSplitPane.setLeftComponent(loggedMonths);
+        monthSplitPane.setRightComponent(daySplitPane);
 
     }
+
+//    public void monthsPanel(FlowTracker flowTracker) {
+//        monthObjectList = new DefaultListModel<>();
+//        daysInMonth = new JLabel();
+//        if (flowTracker.getKeys().isEmpty()) {
+//            errorMessage.setText("you have not logged any days yet!");
+//        } else {
+//            for (String monthYear : flowTracker.getKeys()) {
+//                monthObjectList.addElement(monthYear);
+//            }
+//        }
+//        monthObjectList.addElement("test1");
+//        monthObjectList.addElement("test2");
+//        monthObjectList.addElement("test3");
+//
+//        monthList = new JList(monthObjectList); //data has type Object[]
+//        monthList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+//        monthList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+//        monthList.setVisibleRowCount(-1);
+//
+//        splitPane = new JSplitPane();
+//        panel = new JPanel();
+//        JScrollPane listScroller = new JScrollPane(monthList);
+//        listScroller.setPreferredSize(new Dimension(250, 80));
+//        splitPane.setLeftComponent(listScroller);
+//        panel.add(daysInMonth);
+//        splitPane.setRightComponent(panel);
+//
+//    }
 
     public void actionPerformed(ActionEvent e) {
         // stub
