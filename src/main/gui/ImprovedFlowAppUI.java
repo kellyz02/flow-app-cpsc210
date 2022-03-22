@@ -6,6 +6,7 @@ import persistence.JsonReader;
 import persistence.JsonWriter;
 import ui.FlowApp;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -13,6 +14,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -68,7 +71,7 @@ public class ImprovedFlowAppUI extends JFrame implements ActionListener {
     private ButtonGroup sc;
     private JButton finishEntry;
 
-    public ImprovedFlowAppUI() throws FileNotFoundException {
+    public ImprovedFlowAppUI() throws FileNotFoundException, IOException {
         super("flow app");
         createFrame();
         createPanels();
@@ -86,13 +89,16 @@ public class ImprovedFlowAppUI extends JFrame implements ActionListener {
         jsonReader = new JsonReader(JSON_STORE);
     }
 
-    public void createPanels() {
+    public void createPanels() throws IOException {
         topPanel = new JPanel(new FlowLayout());
         add(topPanel);
         middlePanel = new JPanel(new FlowLayout());
         add(middlePanel);
         bottomPanel = new JPanel(new FlowLayout());
         add(bottomPanel);
+        BufferedImage logo = ImageIO.read(new File("./smaller.png"));
+        JLabel logoLabel = new JLabel(new ImageIcon(logo.getScaledInstance(200, 200, Image.SCALE_FAST)));
+        topPanel.add(logoLabel);
     }
 
     public void createFrame() {
@@ -410,6 +416,8 @@ public class ImprovedFlowAppUI extends JFrame implements ActionListener {
             new ImprovedFlowAppUI();
         } catch (FileNotFoundException e) {
             System.out.println("Unable to run application: file not found");
+        } catch (IOException e) {
+            System.out.println("picture not found");
         }
     }
 }
