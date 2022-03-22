@@ -16,7 +16,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class FlowApp2 extends JFrame implements ActionListener {
+public class FlowApp2 extends JFrame {
     private static final int FRAME_WIDTH = 400;
     private static final int FRAME_HEIGHT = 400;
     private JButton newEntry;
@@ -79,10 +79,10 @@ public class FlowApp2 extends JFrame implements ActionListener {
     }
 
     public void entryButton() {
-        newEntry = new JButton("log a new entry");
-        newEntry.setActionCommand("New Entry");
-        newEntry.addActionListener(this);
-        middlePanel.add(newEntry);
+        newEntry = new JButton(new EntryAction());
+//        newEntry.setActionCommand("New Entry");
+//        newEntry.addActionListener(this);
+        topPanel.add(newEntry);
     }
 
     public void viewDeleteButton() {
@@ -103,11 +103,11 @@ public class FlowApp2 extends JFrame implements ActionListener {
         bottomPanel.add(loadButton);
     }
 
-    public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("New Entry")) {
-            new EntryFrame2(flowTracker);
-        }
-    }
+//    public void actionPerformed(ActionEvent e) {
+//        if (e.getActionCommand().equals("New Entry")) {
+//            new EntryFrame2(flowTracker);
+//        }
+//    }
 
     private class ViewDeleteAction extends AbstractAction {
 
@@ -118,6 +118,26 @@ public class FlowApp2 extends JFrame implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent evt) {
             new ViewFrame2(flowTracker);
+//            JTextArea textArea = new JTextArea("Insert your text here");
+//            JScrollPane scrollPane = new JScrollPane(textArea);
+//            textArea.setLineWrap(true);
+//            textArea.setWrapStyleWord(true);
+//            scrollPane.setPreferredSize(new Dimension(500, 500));
+//            JOptionPane.showMessageDialog(null, scrollPane, "dialog test with textarea", JOptionPane.YES_NO_OPTION);
+
+
+        }
+    }
+
+    private class EntryAction extends AbstractAction {
+
+        EntryAction() {
+            super("log a new entry");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            new EntryFrame2(flowTracker);
 //            JTextArea textArea = new JTextArea("Insert your text here");
 //            JScrollPane scrollPane = new JScrollPane(textArea);
 //            textArea.setLineWrap(true);

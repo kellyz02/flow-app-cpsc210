@@ -71,6 +71,7 @@ public class EntryUI extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
+
     }
 
     public void addPanels() {

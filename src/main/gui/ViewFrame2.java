@@ -17,6 +17,8 @@ public class ViewFrame2 extends JInternalFrame implements ActionListener {
     private JPanel loggedMonths;
     private JPanel loggedDays;
     private JPanel viewEntry;
+    private JScrollPane scrollMonths;
+    private JScrollPane scrollDays;
     private JSplitPane monthSplitPane;
     private JSplitPane daySplitPane;
     private DefaultListModel<String> monthObjectList;
@@ -29,13 +31,8 @@ public class ViewFrame2 extends JInternalFrame implements ActionListener {
         ((JPanel) getContentPane()).setBorder(new EmptyBorder(13, 13, 13, 13));
         setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
         this.flowTracker = flowTracker;
-        monthSplitPane = new JSplitPane();
-        loggedMonths = new JPanel();
-        daySplitPane = new JSplitPane();
-        loggedDays = new JPanel();
-        viewEntry = new JPanel();
-        addErrorMessage();
-        createSplitPane();
+        createPanes();
+        formatSplitPane();
         add(monthSplitPane);
         pack();
         setVisible(true);
@@ -49,7 +46,17 @@ public class ViewFrame2 extends JInternalFrame implements ActionListener {
         loggedMonths.add(errorMessage);
     }
 
-    public void createSplitPane() {
+    public void createPanes() {
+        monthSplitPane = new JSplitPane();
+        loggedMonths = new JPanel();
+        daySplitPane = new JSplitPane();
+        loggedDays = new JPanel();
+        viewEntry = new JPanel();
+        errorMessage = new JLabel();
+        loggedMonths.add(errorMessage);
+    }
+
+    public void formatSplitPane() {
         monthObjectList = new DefaultListModel<>();
         if (flowTracker.getKeys().isEmpty()) {
             errorMessage.setText("you have not logged any days yet!");
@@ -64,12 +71,17 @@ public class ViewFrame2 extends JInternalFrame implements ActionListener {
         monthList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         monthList.setVisibleRowCount(-1);
 
+        scrollMonths = new JScrollPane(monthList);
 
-        daySplitPane.setLeftComponent(loggedDays);
+        daySplitPane.setLeftComponent(scrollDays);
         daySplitPane.setRightComponent(viewEntry);
-        monthSplitPane.setLeftComponent(loggedMonths);
+        monthSplitPane.setLeftComponent(scrollMonths);
         monthSplitPane.setRightComponent(daySplitPane);
 
+    }
+
+    public void selectMonth() {
+        monthList.getSelectedValue();
     }
 
     public void actionPerformed(ActionEvent e) {
