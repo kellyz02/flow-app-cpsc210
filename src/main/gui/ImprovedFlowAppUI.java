@@ -2,14 +2,22 @@ package gui;
 
 import model.FlowDay;
 import model.FlowTracker;
+import persistence.JsonReader;
+import persistence.JsonWriter;
+import ui.FlowApp;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class ImprovedFlowAppUI extends JFrame implements ActionListener {
@@ -17,13 +25,19 @@ public class ImprovedFlowAppUI extends JFrame implements ActionListener {
     private static final int FRAME_HEIGHT = 400;
     private JButton newEntry;
     private JButton viewDelete;
+    private JButton saveButton;
+    private JButton loadButton;
     private JPanel topPanel;
     private JPanel middlePanel;
     private JPanel bottomPanel;
     private JFrame entryFrame;
-    private JLabel emptyLabel;
 
     private FlowTracker flowTracker;
+
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
+    private static final String JSON_STORE = "./data/flowTracker.json";
+
 
 
     private JTextField dateField;
@@ -52,21 +66,24 @@ public class ImprovedFlowAppUI extends JFrame implements ActionListener {
     private ButtonGroup fc;
     private ButtonGroup mc;
     private ButtonGroup sc;
-    private FlowTracker ft;
     private JButton finishEntry;
 
-    public ImprovedFlowAppUI() {
+    public ImprovedFlowAppUI() throws FileNotFoundException {
         super("flow app");
         createFrame();
         createPanels();
         createButtons();
-
+        flowTracker = new FlowTracker("my flow tracker");
 
 
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
+
+        flowTracker = new FlowTracker("My flow tracker");
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
     }
 
     public void createPanels() {
@@ -88,6 +105,8 @@ public class ImprovedFlowAppUI extends JFrame implements ActionListener {
     public void createButtons() {
         entryButton();
         viewDeleteButton();
+        saveButton();
+        loadButton();
     }
 
     public void entryButton() {
@@ -105,16 +124,25 @@ public class ImprovedFlowAppUI extends JFrame implements ActionListener {
 //        middlePanel.add(viewDelete);
     }
 
+    public void saveButton() {
+        saveButton = new JButton(new SaveAction());
+        bottomPanel.add(saveButton);
+    }
+
+    public void loadButton() {
+        loadButton = new JButton(new LoadAction());
+        bottomPanel.add(loadButton);
+    }
+
 
     public void entryFrame() {
         entryFrame = new JFrame("log a new entry");
-        entryFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        entryFrame.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        entryFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        entryFrame.setPreferredSize(new Dimension(500, 400));
         JLabel entryFrameLabel = new JLabel("please fill in the fields for the new entry");
         entryFrame.getContentPane().add(entryFrameLabel, BorderLayout.CENTER);
-        entryFrame.setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
+        entryFrame.setLayout(new FlowLayout());
         createEntryPanels();
-        ft = new FlowTracker("my flow tracker");
         flowChoices();
         moodChoices();
         symptomChoices();
@@ -242,14 +270,14 @@ public class ImprovedFlowAppUI extends JFrame implements ActionListener {
                 if (Pattern.matches(dateNamePattern, enteredDate)) {
                     String[] monthNameArray = enteredDate.split("/", 2);
                     String monthName = monthNameArray[1];
-                    FlowDay currentDay = ft.addEntry(enteredDate, monthName);
+                    FlowDay currentDay = flowTracker.addEntry(enteredDate, monthName);
                     addAttributes(currentDay);
                     printAttributes(currentDay);
                 } else {
                     loggedDay.setText("date incorrectly formatted! please try again");
                 }
             }
-            add(loggedDay);
+            entryFrame.add(loggedDay);
         }
     }
 
@@ -269,6 +297,42 @@ public class ImprovedFlowAppUI extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(null, scrollPane, "dialog test with textarea", JOptionPane.YES_NO_OPTION);
 
 
+        }
+    }
+
+    private class SaveAction extends AbstractAction {
+
+        SaveAction() {
+            super("save logged days");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            try {
+                jsonWriter.open();
+                jsonWriter.write(flowTracker);
+                jsonWriter.close();
+                System.out.println("Saved " + flowTracker.getName() + " to " + JSON_STORE);
+            } catch (FileNotFoundException e) {
+                System.out.println("Unable to write to file: " + JSON_STORE);
+            }
+        }
+    }
+
+    private class LoadAction extends AbstractAction {
+
+        LoadAction() {
+            super("load logged days");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            try {
+                flowTracker = jsonReader.read();
+                System.out.println("Loaded " + flowTracker.getName() + " from " + JSON_STORE);
+            } catch (IOException e) {
+                System.out.println("Unable to read from file: " + JSON_STORE);
+            }
         }
     }
 
@@ -341,9 +405,11 @@ public class ImprovedFlowAppUI extends JFrame implements ActionListener {
         loggedDay.setText(returnAttributes);
     }
 
-
-
     public static void main(String[] args) {
-        new ImprovedFlowAppUI();
+        try {
+            new ImprovedFlowAppUI();
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to run application: file not found");
+        }
     }
 }
