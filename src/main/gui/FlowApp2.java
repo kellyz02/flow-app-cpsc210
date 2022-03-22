@@ -16,7 +16,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class MainFrame2 extends JFrame implements ActionListener {
+public class FlowApp2 extends JFrame implements ActionListener {
     private static final int FRAME_WIDTH = 400;
     private static final int FRAME_HEIGHT = 400;
     private JButton newEntry;
@@ -34,7 +34,7 @@ public class MainFrame2 extends JFrame implements ActionListener {
     private static final String JSON_STORE = "./data/flowTracker.json";
 
 
-    public MainFrame2() throws FileNotFoundException, IOException {
+    public FlowApp2() throws FileNotFoundException, IOException {
         super("flow app");
         createFrame();
         createPanels();
@@ -60,7 +60,7 @@ public class MainFrame2 extends JFrame implements ActionListener {
         bottomPanel = new JPanel(new FlowLayout());
         add(bottomPanel);
         BufferedImage logo = ImageIO.read(new File("./smaller.png"));
-        JLabel logoLabel = new JLabel(new ImageIcon(logo.getScaledInstance(50, 50, Image.SCALE_FAST)));
+        JLabel logoLabel = new JLabel(new ImageIcon(logo.getScaledInstance(200, 200, Image.SCALE_FAST)));
         topPanel.add(logoLabel);
     }
 
@@ -86,11 +86,11 @@ public class MainFrame2 extends JFrame implements ActionListener {
     }
 
     public void viewDeleteButton() {
-//        viewDelete = new JButton(new ViewDeleteAction());
-//        middlePanel.add(viewDelete);
-        viewDelete.setActionCommand("view");
-        viewDelete.addActionListener(this);
+        viewDelete = new JButton(new ViewDeleteAction());
         middlePanel.add(viewDelete);
+//        viewDelete.setActionCommand("view/delet");
+//        viewDelete.addActionListener(this);
+//        middlePanel.add(viewDelete);
     }
 
     public void saveButton() {
@@ -106,23 +106,28 @@ public class MainFrame2 extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("New Entry")) {
             new EntryFrame2(flowTracker);
-        } else if (e.getActionCommand().equals("view")) {
-            new ViewFrame2(flowTracker);
         }
     }
 
-//    private class ViewDeleteAction extends AbstractAction {
-//
-//        ViewDeleteAction() {
-//            super("view/delete logged days");
-//        }
-//
-//        @Override
-//        public void actionPerformed(ActionEvent evt) {
-//            new ViewFrame2(flowTracker);
-//
-//        }
-//    }
+    private class ViewDeleteAction extends AbstractAction {
+
+        ViewDeleteAction() {
+            super("view/delete logged days");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            new ViewFrame2(flowTracker);
+//            JTextArea textArea = new JTextArea("Insert your text here");
+//            JScrollPane scrollPane = new JScrollPane(textArea);
+//            textArea.setLineWrap(true);
+//            textArea.setWrapStyleWord(true);
+//            scrollPane.setPreferredSize(new Dimension(500, 500));
+//            JOptionPane.showMessageDialog(null, scrollPane, "dialog test with textarea", JOptionPane.YES_NO_OPTION);
+
+
+        }
+    }
 
     private class SaveAction extends AbstractAction {
 
