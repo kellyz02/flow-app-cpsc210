@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
 
-public class EntryFrame2 extends JInternalFrame implements ActionListener {
+public class EntryFrame2 extends JFrame implements ActionListener {
 
     private JTextField dateField;
     private JRadioButton spotting;
@@ -43,12 +43,12 @@ public class EntryFrame2 extends JInternalFrame implements ActionListener {
     private FlowTracker flowTracker;
 
     public EntryFrame2(FlowTracker flowTracker) {
-        super("log a new entry", false, true, false, true);
+        super("log a new entry");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setPreferredSize(new Dimension(500, 400));
         JLabel entryFrameLabel = new JLabel("please fill in the fields for the new entry");
         getContentPane().add(entryFrameLabel, BorderLayout.CENTER);
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setLayout(new FlowLayout());
         this.flowTracker = flowTracker;
         createEntryPanels();
         flowChoices();
@@ -63,6 +63,7 @@ public class EntryFrame2 extends JInternalFrame implements ActionListener {
         add(symptomEntry);
         add(finishEntry);
         add(loggedDay);
+        setVisible(true);
     }
 
     public void createEntryPanels() {
