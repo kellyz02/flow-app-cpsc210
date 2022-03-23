@@ -1,74 +1,44 @@
 {
     "tracker name": "My flow tracker",
-    "months tracked": [
-        {
-            "month": "05/2022",
-            "logged days": [
-                {
-                    "symptom": "headaches",
-                    "mood": "happy",
-                    "day": "22/05/2022",
-                    "flow": "spotting"
-                },
-                {
-                    "symptom": "",
-                    "mood": "angry",
-                    "day": "23/05/2022",
-                    "flow": "medium"
-                }
-            ]
-        },
-        {
-            "month": "03/2022",
-            "logged days": [
-                {
-                    "symptom": "headaches",
-                    "mood": "angry",
-                    "day": "01/03/2022",
-                    "flow": "medium"
-                },
-                {
-                    "symptom": "headaches",
-                    "mood": "angry",
-                    "day": "02/03/2022",
-                    "flow": "medium"
-                },
-                {
-                    "symptom": "headaches",
-                    "mood": "angry",
-                    "day": "03/03/2022",
-                    "flow": "medium"
-                },
-                {
-                    "symptom": "headaches",
-                    "mood": "angry",
-                    "day": "04/03/2022",
-                    "flow": "medium"
-                },
-                {
-                    "symptom": "headaches",
-                    "mood": "angry",
-                    "day": "05/03/2022",
-                    "flow": "medium"
-                }
-            ]
-        },
-        {
-            "month": "04/2022",
-            "logged days": [
-                {
-                    "symptom": "headaches",
-                    "mood": "happy",
-                    "day": "22/04/2022",
-                    "flow": "spotting"
-                },
-                {
-                    "symptom": "",
-                    "mood": "angry",
-                    "day": "23/04/2022",
-                    "flow": "medium"
-                }
-            ]
-        }
-    ]
+    "months tracked": [{
+        "month": "03/2022",
+        "logged days": [
+            {
+                "symptom": "headaches",
+                "mood": "angry",
+                "day": "01/03/2022",
+                "flow": "medium"
+            },
+            {
+                "symptom": "headaches",
+                "mood": "angry",
+                "day": "02/03/2022",
+                "flow": "medium"
+            },
+            {
+                "symptom": "headaches",
+                "mood": "angry",
+                "day": "03/03/2022",
+                "flow": "medium"
+            },
+            {
+                "symptom": "headaches",
+                "mood": "angry",
+                "day": "04/03/2022",
+                "flow": "medium"
+            },
+            {
+                "symptom": "headaches",
+                "mood": "angry",
+                "day": "05/03/2022",
+                "flow": "medium"
+            },
+            {
+                "symptom": "headaches",
+                "mood": "angry",
+                "day": "22/03/2022",
+                "flow": "medium"
+            }
+        ]
+    }]
 }

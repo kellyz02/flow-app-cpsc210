@@ -4,9 +4,6 @@ import model.FlowDay;
 import model.FlowTracker;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,11 +11,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
 
-import static java.awt.Color.black;
+public class EntryFrame extends JFrame implements ActionListener {
 
-public class EntryUI extends JFrame implements ActionListener {
-    private static final int HEIGHT = 400;
-    private static final int WIDTH = 500;
     private JTextField dateField;
     private JRadioButton spotting;
     private JRadioButton light;
@@ -45,22 +39,23 @@ public class EntryUI extends JFrame implements ActionListener {
     private ButtonGroup fc;
     private ButtonGroup mc;
     private ButtonGroup sc;
-    private FlowTracker ft;
     private JButton finishEntry;
+    private FlowTracker flowTracker;
 
-    public EntryUI() {
+    public EntryFrame(FlowTracker flowTracker) {
         super("log a new entry");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        ((JPanel) getContentPane()).setBorder(new EmptyBorder(13, 13, 13, 13));
-        setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
-        addPanels();
-        ft = new FlowTracker("my flow tracker");
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setPreferredSize(new Dimension(500, 400));
+        JLabel entryFrameLabel = new JLabel("please fill in the fields for the new entry");
+        getContentPane().add(entryFrameLabel, BorderLayout.CENTER);
+        setLayout(new FlowLayout());
+        this.flowTracker = flowTracker;
+        createEntryPanels();
         flowChoices();
         moodChoices();
         symptomChoices();
-        labels();
-        addButtons();
+        entryLabels();
+        addEntryButtons();
         pack();
         add(dateEntry);
         add(flowEntry);
@@ -68,20 +63,17 @@ public class EntryUI extends JFrame implements ActionListener {
         add(symptomEntry);
         add(finishEntry);
         add(loggedDay);
-        setLocationRelativeTo(null);
         setVisible(true);
-        setResizable(false);
-
     }
 
-    public void addPanels() {
+    public void createEntryPanels() {
         dateEntry = new JPanel(new FlowLayout());
         flowEntry = new JPanel(new FlowLayout());
         moodEntry = new JPanel(new FlowLayout());
         symptomEntry = new JPanel(new FlowLayout());
     }
 
-    public void addButtons() {
+    public void addEntryButtons() {
         flowEntry.add(flow);
         flowEntry.add(spotting);
         flowEntry.add(light);
@@ -113,7 +105,7 @@ public class EntryUI extends JFrame implements ActionListener {
         dateField = new JTextField(dtf.format(localDate));
     }
 
-    public void labels() {
+    public void entryLabels() {
         flow = new JLabel("flow: ");
         date = new JLabel("date: ");
         mood = new JLabel("mood: ");
@@ -180,7 +172,7 @@ public class EntryUI extends JFrame implements ActionListener {
             if (Pattern.matches(dateNamePattern, enteredDate)) {
                 String[] monthNameArray = enteredDate.split("/", 2);
                 String monthName = monthNameArray[1];
-                FlowDay currentDay = ft.addEntry(enteredDate, monthName);
+                FlowDay currentDay = flowTracker.addEntry(enteredDate, monthName);
                 addAttributes(currentDay);
                 printAttributes(currentDay);
             } else {
@@ -197,52 +189,80 @@ public class EntryUI extends JFrame implements ActionListener {
     }
 
     public void processFlowCommand(String command, FlowDay flowDay) {
-        if (command.equals("spotting")) {
-            flowDay.enterFlow("spotting");
-        } else if (command.equals("light")) {
-            flowDay.enterFlow("light");
-        } else if (command.equals("medium")) {
-            flowDay.enterFlow("medium");
-        } else if (command.equals("heavy")) {
-            flowDay.enterFlow("heavy");
+        switch (command) {
+            case "spotting":
+                flowDay.enterFlow("spotting");
+                break;
+            case "light":
+                flowDay.enterFlow("light");
+                break;
+            case "medium":
+                flowDay.enterFlow("medium");
+                break;
+            case "heavy":
+                flowDay.enterFlow("heavy");
+                break;
+            default:
+                flowDay.enterFlow(null);
         }
     }
 
     public void processMoodCommand(String command, FlowDay flowDay) {
-        if (command.equals("happy")) {
-            flowDay.enterMood("happy");
-        } else if (command.equals("sad")) {
-            flowDay.enterMood("sad");
-        } else if (command.equals("angry")) {
-            flowDay.enterMood("angry");
-        } else if (command.equals("unmotivated")) {
-            flowDay.enterMood("unmotivated");
+        switch (command) {
+            case "happy":
+                flowDay.enterMood("happy");
+                break;
+            case "sad":
+                flowDay.enterMood("sad");
+                break;
+            case "angry":
+                flowDay.enterMood("angry");
+                break;
+            case "unmotivated":
+                flowDay.enterMood("unmotivated");
+                break;
+            default:
+                flowDay.enterMood(null);
         }
     }
 
     public void processSymptomCommand(String command, FlowDay flowDay) {
-        if (command.equals("cramps")) {
-            flowDay.enterSymptom("cramps");
-        } else if (command.equals("fatigue")) {
-            flowDay.enterSymptom("fatigue");
-        } else if (command.equals("cravings")) {
-            flowDay.enterSymptom("food cravings");
-        } else if (command.equals("headaches")) {
-            flowDay.enterSymptom("headaches");
-        } else if (command.equals("none")) {
-            flowDay.enterSymptom("no symptoms");
+        switch (command) {
+            case "cramps":
+                flowDay.enterSymptom("cramps");
+                break;
+            case "fatigue":
+                flowDay.enterSymptom("fatigue");
+                break;
+            case "cravings":
+                flowDay.enterSymptom("food cravings");
+                break;
+            case "headaches":
+                flowDay.enterSymptom("headaches");
+                break;
+            case "none":
+                flowDay.enterSymptom("no symptoms");
+                break;
+            default:
+                flowDay.enterSymptom(null);
         }
     }
 
     private void printAttributes(FlowDay currentDay) {
-        String returnAttributes = "On " + currentDay.getDayName() + ", your flow was " + currentDay.getFlow()
-                        + ". You were feeling " + currentDay.getMood() + ". You experienced "
-                        + currentDay.getSymptom() + ".";
+        String flow = null;
+        String mood = null;
+        String symptom = null;
+
+        if (currentDay.getFlow() != null) {
+            flow = ", your flow was " + currentDay.getFlow();
+        }
+        if (currentDay.getMood() != null) {
+            mood = ". You were feeling " + currentDay.getMood();
+        }
+        if (currentDay.getSymptom() != null) {
+            symptom = ". You experienced " + currentDay.getSymptom();
+        }
+        String returnAttributes = "On " + currentDay.getDayName() + flow + mood + symptom + ".";
         loggedDay.setText(returnAttributes);
     }
-
-    public static void main(String[] args) {
-        new EntryUI();
-    }
-
 }

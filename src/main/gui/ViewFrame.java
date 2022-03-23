@@ -10,7 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ViewFrame2 extends JFrame implements ActionListener {
+public class ViewFrame extends JFrame implements ActionListener {
     private static final int HEIGHT = 400;
     private static final int WIDTH = 500;
     private JList monthList;
@@ -35,7 +35,7 @@ public class ViewFrame2 extends JFrame implements ActionListener {
     private FlowTracker flowTracker;
     private FlowMonth selectedMonth;
 
-    public ViewFrame2(FlowTracker flowTracker) {
+    public ViewFrame(FlowTracker flowTracker) {
         super("View/Delete Previously Logged Days");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setPreferredSize(new Dimension(700, 400));
