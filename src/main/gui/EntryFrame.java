@@ -111,6 +111,10 @@ public class EntryFrame extends JFrame implements ActionListener {
         dateEntry.add(date);
         createField();
         dateEntry.add(dateField);
+        finishEntryPanel();
+    }
+
+    public void finishEntryPanel() {
         finishEntry = new JButton("finish entry");
         finishEntry.setActionCommand("finish entry");
         finishEntry.addActionListener(this);
@@ -118,6 +122,7 @@ public class EntryFrame extends JFrame implements ActionListener {
         loggedDay = new JLabel();
         finishEntryPanel.add(loggedDay);
     }
+
 
     public void createField() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
