@@ -17,7 +17,7 @@ public class ViewFrame extends JFrame implements ActionListener {
     private JList dayList;
     private JLabel errorMessage;
     private JLabel daysInMonth;
-    private JLabel viewedDayLabel;
+    private JTextArea viewedDay;
     private JPanel loggedMonths;
     private JPanel loggedDays;
     private JPanel viewEntry;
@@ -171,7 +171,7 @@ public class ViewFrame extends JFrame implements ActionListener {
         loggedDays.revalidate();
         loggedDays.repaint();
 
-        viewedDayLabel = null;
+        viewedDay = null;
         viewEntry.repaint();
         viewEntry.revalidate();
     }
@@ -180,8 +180,9 @@ public class ViewFrame extends JFrame implements ActionListener {
     public void viewDay() {
         String selectedDayName = dayList.getSelectedValue().toString();
         FlowDay selectedDay = selectedMonth.findFlowDay(selectedDayName);
-        viewedDayLabel = new JLabel();
-        viewEntry.add(viewedDayLabel);
+        viewedDay = new JTextArea();
+        viewedDay.setSize(50, 100);
+        viewEntry.add(viewedDay);
         printAttributes(selectedDay);
         revalidate();
         repaint();
@@ -198,7 +199,7 @@ public class ViewFrame extends JFrame implements ActionListener {
         revalidate();
         repaint();
 
-        viewedDayLabel = null;
+        viewedDay = null;
         viewEntry.repaint();
         viewEntry.revalidate();
     }
@@ -219,7 +220,7 @@ public class ViewFrame extends JFrame implements ActionListener {
             symptom = ". You experienced " + currentDay.getSymptom();
         }
         String returnAttributes = "On " + currentDay.getDayName() + flow + mood + symptom + ".";
-        viewedDayLabel.setText(returnAttributes);
+        viewedDay.setText(returnAttributes);
     }
 
 
