@@ -33,6 +33,7 @@ public class EntryFrame extends JFrame implements ActionListener {
     private JPanel symptomEntry;
     private JPanel dateEntry;
     private JPanel helperPanel;
+    private JPanel finishEntryPanel;
     private JLabel flow;
     private JLabel date;
     private JLabel mood;
@@ -51,7 +52,6 @@ public class EntryFrame extends JFrame implements ActionListener {
         setPreferredSize(new Dimension(650, 500));
         getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
         ((JPanel) getContentPane()).setBorder(new EmptyBorder(20, 20, 20, 20));
-//        getContentPane().add(entryFrameLabel, BorderLayout.CENTER);
         this.flowTracker = flowTracker;
         labelPanel();
         createEntryPanels();
@@ -65,21 +65,27 @@ public class EntryFrame extends JFrame implements ActionListener {
         add(flowEntry);
         add(moodEntry);
         add(symptomEntry);
-        add(finishEntry);
+        add(finishEntryPanel);
         add(loggedDay);
         setVisible(true);
     }
 
     public void createEntryPanels() {
-        dateEntry = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        flowEntry = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        moodEntry = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        symptomEntry = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        dateEntry = new JPanel();
+        dateEntry.setLayout(new BoxLayout(dateEntry, BoxLayout.PAGE_AXIS));
+        flowEntry = new JPanel();
+        flowEntry.setLayout(new BoxLayout(flowEntry, BoxLayout.PAGE_AXIS));
+        moodEntry = new JPanel();
+        moodEntry.setLayout(new BoxLayout(moodEntry, BoxLayout.PAGE_AXIS));
+        symptomEntry = new JPanel();
+        symptomEntry.setLayout(new BoxLayout(symptomEntry, BoxLayout.PAGE_AXIS));
+        finishEntryPanel = new JPanel();
+        finishEntryPanel.setLayout(new BoxLayout(finishEntryPanel, BoxLayout.PAGE_AXIS));
     }
 
     public void labelPanel() {
-        entryFrameLabel = new JLabel("please fill in the following fields for the new entry :)");
-        entryFrameLabel.setFont(new Font("Dialog", Font.ITALIC, 14));
+        entryFrameLabel = new JLabel("Please select options for the following fields to log your entry! :)");
+        entryFrameLabel.setFont(new Font("Dialog", Font.BOLD, 14));
         helperPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         add(helperPanel);
         helperPanel.add(entryFrameLabel);
@@ -108,7 +114,9 @@ public class EntryFrame extends JFrame implements ActionListener {
         finishEntry = new JButton("finish entry");
         finishEntry.setActionCommand("finish entry");
         finishEntry.addActionListener(this);
+        finishEntryPanel.add(finishEntry);
         loggedDay = new JLabel();
+        finishEntryPanel.add(loggedDay);
     }
 
     public void createField() {
