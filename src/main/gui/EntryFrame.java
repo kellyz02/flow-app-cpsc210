@@ -12,9 +12,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
 
-import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
-import static javax.swing.JOptionPane.YES_NO_OPTION;
-
 public class EntryFrame extends JFrame implements ActionListener {
 
     private JTextField dateField;
@@ -43,7 +40,7 @@ public class EntryFrame extends JFrame implements ActionListener {
     private JLabel flow;
     private JLabel date;
     private JLabel mood;
-    private JLabel loggedDay;
+    private JLabel errorMessage;
     private JLabel symptom;
     private JLabel entryFrameLabel;
     private ButtonGroup fc;
@@ -51,6 +48,7 @@ public class EntryFrame extends JFrame implements ActionListener {
     private ButtonGroup sc;
     private JButton finishEntry;
     private FlowTracker flowTracker;
+    private JPanel errorMessagePanel;
 
     public EntryFrame(FlowTracker flowTracker) {
         super("log a new entry!");
@@ -66,11 +64,13 @@ public class EntryFrame extends JFrame implements ActionListener {
         symptomChoices();
         entryLabels();
         addEntryButtons();
-        pack();
         add(dateEntry);
         add(organizePanel);
         add(finishEntryPanel);
-        add(loggedDay);
+        add(errorMessagePanel);
+        pack();
+        setLocationRelativeTo(null);
+        setResizable(false);
         setVisible(true);
     }
 
@@ -85,10 +85,13 @@ public class EntryFrame extends JFrame implements ActionListener {
         symptomEntry.setLayout(new BoxLayout(symptomEntry, BoxLayout.PAGE_AXIS));
         finishEntryPanel = new JPanel();
         finishEntryPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        errorMessagePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         organizePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         organizePanel.add(flowEntry);
         organizePanel.add(moodEntry);
         organizePanel.add(symptomEntry);
+        errorMessage = new JLabel();
+        errorMessagePanel.add(errorMessage);
     }
 
     public void labelPanel() {
@@ -132,8 +135,6 @@ public class EntryFrame extends JFrame implements ActionListener {
         finishEntry.setActionCommand("finish entry");
         finishEntry.addActionListener(this);
         finishEntryPanel.add(finishEntry);
-        loggedDay = new JLabel();
-        finishEntryPanel.add(loggedDay);
     }
 
 
@@ -148,7 +149,7 @@ public class EntryFrame extends JFrame implements ActionListener {
     public void entryLabels() {
         flow = new JLabel("flow: ");
         flow.setFont(new Font("Dialog", Font.BOLD, 14));
-        date = new JLabel("date: ");
+        date = new JLabel("date (DD/MM/YYYY): ");
         date.setFont(new Font("Dialog", Font.BOLD, 14));
         mood = new JLabel("mood: ");
         mood.setFont(new Font("Dialog", Font.BOLD, 14));
@@ -224,96 +225,117 @@ public class EntryFrame extends JFrame implements ActionListener {
                 String monthName = monthNameArray[1];
                 FlowDay currentDay = flowTracker.addEntry(enteredDate, monthName);
                 addAttributes(currentDay);
-                printAttributes(currentDay);
+                finishEntry(currentDay);
             } else {
-                loggedDay.setText("date incorrectly formatted! please try again");
+                errorMessage.setText("date incorrectly formatted! please try again");
             }
         }
-        add(loggedDay);
+        add(errorMessage);
     }
 
-//    public void finishEntry(FlowDay currentDay) {
-//        ImageIcon finishIcon = new ImageIcon("filesicon3.png");
-//        int result = JOptionPane.showMessageDialog(this, printAttributes(currentDay));
-//        switch (result) {
-//            case JOptionPane.YES_OPTION:
-//                loadFlowTracker();
-//                break;
-//            case JOptionPane.NO_OPTION:
-//            default:
-//        }
-//    }
+
+    public void finishEntry(FlowDay currentDay) {
+        ImageIcon finishIcon = new ImageIcon("filesicon3.png");
+        String[] newOptions = new String[2];
+        newOptions[0] = "log another entry";
+        newOptions[1] = "return to home";
+        int result = JOptionPane.showOptionDialog(this.getContentPane(),
+                printAttributes(currentDay),
+                "your entry has been successfully logged!", 0,
+                JOptionPane.INFORMATION_MESSAGE, finishIcon, newOptions, null);
+        switch (result) {
+            case 0:
+                mc.clearSelection();
+                fc.clearSelection();
+                sc.clearSelection();
+                break;
+            case 1:
+                this.dispose();
+            default:
+        }
+    }
 
 
     public void addAttributes(FlowDay flowDay) {
-        processFlowCommand(fc.getSelection().getActionCommand(), flowDay);
-        processMoodCommand(mc.getSelection().getActionCommand(), flowDay);
-        processSymptomCommand(sc.getSelection().getActionCommand(),flowDay);
+        processFlowCommand(flowDay);
+        processMoodCommand(flowDay);
+        processSymptomCommand(flowDay);
     }
 
-    public void processFlowCommand(String command, FlowDay flowDay) {
-        switch (command) {
-            case "spotting":
-                flowDay.enterFlow("spotting");
-                break;
-            case "light":
-                flowDay.enterFlow("light");
-                break;
-            case "medium":
-                flowDay.enterFlow("medium");
-                break;
-            case "heavy":
-                flowDay.enterFlow("heavy");
-                break;
-            case "none":
-                flowDay.enterFlow("none");
-                break;
-            default:
-                flowDay.enterFlow("");
+    public void processFlowCommand(FlowDay flowDay) {
+        if (fc.getSelection() != null) {
+            String command = fc.getSelection().getActionCommand();
+            switch (command) {
+                case "spotting":
+                    flowDay.enterFlow("spotting");
+                    break;
+                case "light":
+                    flowDay.enterFlow("light");
+                    break;
+                case "medium":
+                    flowDay.enterFlow("medium");
+                    break;
+                case "heavy":
+                    flowDay.enterFlow("heavy");
+                    break;
+                case "none":
+                    flowDay.enterFlow("none");
+                    break;
+            }
+        } else {
+            flowDay.enterFlow("");
         }
+
     }
 
-    public void processMoodCommand(String command, FlowDay flowDay) {
-        switch (command) {
-            case "happy":
-                flowDay.enterMood("happy");
-                break;
-            case "sad":
-                flowDay.enterMood("sad");
-                break;
-            case "angry":
-                flowDay.enterMood("angry");
-                break;
-            case "unmotivated":
-                flowDay.enterMood("unmotivated");
-                break;
-            case "PMS":
-                flowDay.enterMood("PMS");
-                break;
-            default:
-                flowDay.enterMood("");
+    public void processMoodCommand(FlowDay flowDay) {
+        if (mc.getSelection() != null) {
+            String command = mc.getSelection().getActionCommand();
+            switch (command) {
+                case "happy":
+                    flowDay.enterMood("happy");
+                    break;
+                case "sad":
+                    flowDay.enterMood("sad");
+                    break;
+                case "angry":
+                    flowDay.enterMood("angry");
+                    break;
+                case "unmotivated":
+                    flowDay.enterMood("unmotivated");
+                    break;
+                case "PMS":
+                    flowDay.enterMood("PMS");
+                    break;
+            }
+        } else {
+            flowDay.enterMood("");
         }
+
     }
 
-    public void processSymptomCommand(String command, FlowDay flowDay) {
-        switch (command) {
-            case "cramps":
-                flowDay.enterSymptom("cramps");
-                break;
-            case "fatigue":
-                flowDay.enterSymptom("fatigue");
-                break;
-            case "cravings":
-                flowDay.enterSymptom("food cravings");
-                break;
-            case "headaches":
-                flowDay.enterSymptom("headaches");
-                break;
-            case "none":
-                flowDay.enterSymptom("no symptoms");
-                break;
-            default:
-                flowDay.enterSymptom("");
+    public void processSymptomCommand(FlowDay flowDay) {
+        if (sc.getSelection() != null) {
+            String command = sc.getSelection().getActionCommand();
+            switch (command) {
+                case "cramps":
+                    flowDay.enterSymptom("cramps");
+                    break;
+                case "fatigue":
+                    flowDay.enterSymptom("fatigue");
+                    break;
+                case "cravings":
+                    flowDay.enterSymptom("food cravings");
+                    break;
+                case "headaches":
+                    flowDay.enterSymptom("headaches");
+                    break;
+                case "none":
+                    flowDay.enterSymptom("no symptoms");
+                    break;
+            }
+        } else {
+            flowDay.enterSymptom("");
         }
     }
 

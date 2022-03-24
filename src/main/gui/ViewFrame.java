@@ -36,7 +36,7 @@ public class ViewFrame extends JFrame implements ActionListener {
     private FlowMonth selectedMonth;
 
     public ViewFrame(FlowTracker flowTracker) {
-        super("View/Delete Previously Logged Days");
+        super("view/delete your previously tracked days");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setPreferredSize(new Dimension(700, 400));
         ((JPanel) getContentPane()).setBorder(new EmptyBorder(13, 13, 13, 13));
@@ -90,6 +90,8 @@ public class ViewFrame extends JFrame implements ActionListener {
         JLabel entryLabel = new JLabel("the entry for the selected day");
         viewEntry.add(entryLabel);
         monthSplitPane.setLeftComponent(loggedMonths);
+//        JLabel loggedMonthsLabel = new JLabel("select a month to view in detail");
+//        loggedMonths.add(loggedMonthsLabel);
         loggedMonths.add(scrollMonths);
         monthSplitPane.setRightComponent(daySplitPane);
 
@@ -201,10 +203,22 @@ public class ViewFrame extends JFrame implements ActionListener {
         viewEntry.revalidate();
     }
 
+
     private void printAttributes(FlowDay currentDay) {
-        String returnAttributes = "On " + currentDay.getDayName() + ", your flow was " + currentDay.getFlow()
-                + ". You were feeling " + currentDay.getMood() + ". You experienced "
-                + currentDay.getSymptom() + ".";
+        String flow = "";
+        String mood = "";
+        String symptom = "";
+
+        if (currentDay.getFlow() != "") {
+            flow = ", your flow was " + currentDay.getFlow();
+        }
+        if (currentDay.getMood() != "") {
+            mood = ". You were feeling " + currentDay.getMood();
+        }
+        if (currentDay.getSymptom() != "") {
+            symptom = ". You experienced " + currentDay.getSymptom();
+        }
+        String returnAttributes = "On " + currentDay.getDayName() + flow + mood + symptom + ".";
         viewedDayLabel.setText(returnAttributes);
     }
 

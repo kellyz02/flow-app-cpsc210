@@ -1,20 +1,91 @@
 {
     "tracker name": "My flow tracker",
-    "months tracked": [{
-        "month": "03/2022",
-        "logged days": [
-            {
+    "months tracked": [
+        {
+            "month": "05/2022",
+            "logged days": [{
                 "symptom": "",
-                "mood": "",
-                "day": "23/03/2022",
-                "flow": ""
-            },
-            {
-                "symptom": "fatigue",
-                "mood": "unmotivated",
-                "day": "24/03/2022",
+                "mood": "angry",
+                "day": "24/05/2022",
                 "flow": "spotting"
-            }
-        ]
-    }]
+            }]
+        },
+        {
+            "month": "07/2022",
+            "logged days": [{
+                "symptom": "",
+                "mood": "angry",
+                "day": "24/07/2022",
+                "flow": "spotting"
+            }]
+        },
+        {
+            "month": "06/2022",
+            "logged days": [{
+                "symptom": "",
+                "mood": "angry",
+                "day": "24/06/2022",
+                "flow": "spotting"
+            }]
+        },
+        {
+            "month": "09/2022",
+            "logged days": [
+                {
+                    "symptom": "",
+                    "mood": "angry",
+                    "day": "24/09/2022",
+                    "flow": "spotting"
+                },
+                {
+                    "symptom": "",
+                    "mood": "angry",
+                    "day": "01/09/2022",
+                    "flow": "spotting"
+                },
+                {
+                    "symptom": "",
+                    "mood": "angry",
+                    "day": "02/09/2022",
+                    "flow": "spotting"
+                },
+                {
+                    "symptom": "",
+                    "mood": "angry",
+                    "day": "03/09/2022",
+                    "flow": "spotting"
+                },
+                {
+                    "symptom": "",
+                    "mood": "angry",
+                    "day": "04/09/2022",
+                    "flow": "spotting"
+                },
+                {
+                    "symptom": "",
+                    "mood": "angry",
+                    "day": "05/09/2022",
+                    "flow": "spotting"
+                }
+            ]
+        },
+        {
+            "month": "03/2022",
+            "logged days": [{
+                "symptom": "headaches",
+                "mood": "",
+                "day": "24/03/2022",
+                "flow": ""
+            }]
+        },
+        {
+            "month": "08/2022",
+            "logged days": [{
+                "symptom": "",
+                "mood": "angry",
+                "day": "24/08/2022",
+                "flow": "spotting"
+            }]
+        }
+    ]
 }
