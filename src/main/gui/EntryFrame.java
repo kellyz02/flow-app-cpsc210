@@ -12,6 +12,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
 
+import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
+import static javax.swing.JOptionPane.YES_NO_OPTION;
+
 public class EntryFrame extends JFrame implements ActionListener {
 
     private JTextField dateField;
@@ -22,17 +25,20 @@ public class EntryFrame extends JFrame implements ActionListener {
     private JRadioButton happy;
     private JRadioButton sad;
     private JRadioButton unmotivated;
+    private JRadioButton pms;
     private JRadioButton angry;
     private JRadioButton cramps;
     private JRadioButton fatigue;
     private JRadioButton headaches;
     private JRadioButton cravings;
     private JRadioButton none;
+    private JRadioButton noFlow;
     private JPanel flowEntry;
     private JPanel moodEntry;
     private JPanel symptomEntry;
     private JPanel dateEntry;
     private JPanel helperPanel;
+    private JPanel organizePanel;
     private JPanel finishEntryPanel;
     private JLabel flow;
     private JLabel date;
@@ -49,7 +55,7 @@ public class EntryFrame extends JFrame implements ActionListener {
     public EntryFrame(FlowTracker flowTracker) {
         super("log a new entry!");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setPreferredSize(new Dimension(650, 500));
+        setPreferredSize(new Dimension(400, 500));
         getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
         ((JPanel) getContentPane()).setBorder(new EmptyBorder(20, 20, 20, 20));
         this.flowTracker = flowTracker;
@@ -62,9 +68,7 @@ public class EntryFrame extends JFrame implements ActionListener {
         addEntryButtons();
         pack();
         add(dateEntry);
-        add(flowEntry);
-        add(moodEntry);
-        add(symptomEntry);
+        add(organizePanel);
         add(finishEntryPanel);
         add(loggedDay);
         setVisible(true);
@@ -72,7 +76,7 @@ public class EntryFrame extends JFrame implements ActionListener {
 
     public void createEntryPanels() {
         dateEntry = new JPanel();
-        dateEntry.setLayout(new BoxLayout(dateEntry, BoxLayout.PAGE_AXIS));
+        dateEntry.setLayout(new FlowLayout(FlowLayout.CENTER));
         flowEntry = new JPanel();
         flowEntry.setLayout(new BoxLayout(flowEntry, BoxLayout.PAGE_AXIS));
         moodEntry = new JPanel();
@@ -80,15 +84,22 @@ public class EntryFrame extends JFrame implements ActionListener {
         symptomEntry = new JPanel();
         symptomEntry.setLayout(new BoxLayout(symptomEntry, BoxLayout.PAGE_AXIS));
         finishEntryPanel = new JPanel();
-        finishEntryPanel.setLayout(new BoxLayout(finishEntryPanel, BoxLayout.PAGE_AXIS));
+        finishEntryPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        organizePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        organizePanel.add(flowEntry);
+        organizePanel.add(moodEntry);
+        organizePanel.add(symptomEntry);
     }
 
     public void labelPanel() {
-        entryFrameLabel = new JLabel("Please select options for the following fields to log your entry! :)");
+        entryFrameLabel = new JLabel("please select an option for the");
+        JLabel entryLabel = new JLabel("following fields to log your entry.");
+        entryLabel.setFont(new Font("Dialog", Font.BOLD, 14));
         entryFrameLabel.setFont(new Font("Dialog", Font.BOLD, 14));
-        helperPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        helperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         add(helperPanel);
         helperPanel.add(entryFrameLabel);
+        helperPanel.add(entryLabel);
     }
 
     public void addEntryButtons() {
@@ -97,10 +108,12 @@ public class EntryFrame extends JFrame implements ActionListener {
         flowEntry.add(light);
         flowEntry.add(medium);
         flowEntry.add(heavy);
+        flowEntry.add(noFlow);
         moodEntry.add(mood);
         moodEntry.add(sad);
         moodEntry.add(happy);
         moodEntry.add(angry);
+        moodEntry.add(pms);
         moodEntry.add(unmotivated);
         symptomEntry.add(symptom);
         symptomEntry.add(cramps);
@@ -128,6 +141,8 @@ public class EntryFrame extends JFrame implements ActionListener {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate localDate = LocalDate.now();
         dateField = new JTextField(dtf.format(localDate));
+        dateField.setHorizontalAlignment(JTextField.CENTER);
+        dateField.setSize(10, 10);
     }
 
     public void entryLabels() {
@@ -151,11 +166,14 @@ public class EntryFrame extends JFrame implements ActionListener {
         medium.setActionCommand("medium");
         heavy = new JRadioButton("heavy");
         heavy.setActionCommand("heavy");
+        noFlow = new JRadioButton("none");
+        noFlow.setActionCommand("none");
         fc = new ButtonGroup();
         fc.add(spotting);
         fc.add(light);
         fc.add(medium);
         fc.add(heavy);
+        fc.add(noFlow);
     }
 
     public void moodChoices() {
@@ -166,12 +184,15 @@ public class EntryFrame extends JFrame implements ActionListener {
         angry = new JRadioButton("angry");
         angry.setActionCommand("angry");
         unmotivated = new JRadioButton("unmotivated");
-        unmotivated.setActionCommand("angry");
+        unmotivated.setActionCommand("unmotivated");
+        pms = new JRadioButton("PMS");
+        pms.setActionCommand("PMS");
         mc = new ButtonGroup();
         mc.add(happy);
         mc.add(sad);
         mc.add(angry);
         mc.add(unmotivated);
+        mc.add(pms);
     }
 
     public void symptomChoices() {
@@ -211,6 +232,19 @@ public class EntryFrame extends JFrame implements ActionListener {
         add(loggedDay);
     }
 
+//    public void finishEntry(FlowDay currentDay) {
+//        ImageIcon finishIcon = new ImageIcon("filesicon3.png");
+//        int result = JOptionPane.showMessageDialog(this, printAttributes(currentDay));
+//        switch (result) {
+//            case JOptionPane.YES_OPTION:
+//                loadFlowTracker();
+//                break;
+//            case JOptionPane.NO_OPTION:
+//            default:
+//        }
+//    }
+
+
     public void addAttributes(FlowDay flowDay) {
         processFlowCommand(fc.getSelection().getActionCommand(), flowDay);
         processMoodCommand(mc.getSelection().getActionCommand(), flowDay);
@@ -231,8 +265,11 @@ public class EntryFrame extends JFrame implements ActionListener {
             case "heavy":
                 flowDay.enterFlow("heavy");
                 break;
+            case "none":
+                flowDay.enterFlow("none");
+                break;
             default:
-                flowDay.enterFlow(null);
+                flowDay.enterFlow("");
         }
     }
 
@@ -250,8 +287,11 @@ public class EntryFrame extends JFrame implements ActionListener {
             case "unmotivated":
                 flowDay.enterMood("unmotivated");
                 break;
+            case "PMS":
+                flowDay.enterMood("PMS");
+                break;
             default:
-                flowDay.enterMood(null);
+                flowDay.enterMood("");
         }
     }
 
@@ -273,25 +313,26 @@ public class EntryFrame extends JFrame implements ActionListener {
                 flowDay.enterSymptom("no symptoms");
                 break;
             default:
-                flowDay.enterSymptom(null);
+                flowDay.enterSymptom("");
         }
     }
 
-    private void printAttributes(FlowDay currentDay) {
-        String flow = null;
-        String mood = null;
-        String symptom = null;
+    private String printAttributes(FlowDay currentDay) {
+        String flow = "";
+        String mood = "";
+        String symptom = "";
 
-        if (currentDay.getFlow() != null) {
+        if (currentDay.getFlow() != "") {
             flow = ", your flow was " + currentDay.getFlow();
         }
-        if (currentDay.getMood() != null) {
+        if (currentDay.getMood() != "") {
             mood = ". You were feeling " + currentDay.getMood();
         }
-        if (currentDay.getSymptom() != null) {
+        if (currentDay.getSymptom() != "") {
             symptom = ". You experienced " + currentDay.getSymptom();
         }
         String returnAttributes = "On " + currentDay.getDayName() + flow + mood + symptom + ".";
-        loggedDay.setText(returnAttributes);
+        return returnAttributes;
+        //loggedDay.setText(returnAttributes);
     }
 }

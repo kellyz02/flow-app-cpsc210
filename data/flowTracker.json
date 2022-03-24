@@ -4,16 +4,16 @@
         "month": "03/2022",
         "logged days": [
             {
-                "symptom": "cramps",
-                "mood": "sad",
+                "symptom": "",
+                "mood": "",
                 "day": "23/03/2022",
-                "flow": "spotting"
+                "flow": ""
             },
             {
                 "symptom": "fatigue",
-                "mood": "angry",
+                "mood": "unmotivated",
                 "day": "24/03/2022",
-                "flow": "medium"
+                "flow": "spotting"
             }
         ]
     }]
