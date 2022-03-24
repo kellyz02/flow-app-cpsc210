@@ -40,12 +40,11 @@ public class ViewFrame extends JFrame implements ActionListener {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setPreferredSize(new Dimension(700, 400));
         ((JPanel) getContentPane()).setBorder(new EmptyBorder(13, 13, 13, 13));
-        setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
+        setLayout(new FlowLayout(FlowLayout.CENTER));
         this.flowTracker = flowTracker;
         createPanes();
         createButtons();
         formatSplitPane();
-        add(monthSplitPane);
         pack();
         setVisible(true);
         setResizable(false);
@@ -57,11 +56,15 @@ public class ViewFrame extends JFrame implements ActionListener {
     }
 
     public void createPanes() {
-        monthSplitPane = new JSplitPane();
         loggedMonths = new JPanel();
-        daySplitPane = new JSplitPane();
+        loggedMonths.setLayout(new BoxLayout(loggedMonths, BoxLayout.PAGE_AXIS));
+        loggedMonths.setSize(100, 200);
         loggedDays = new JPanel();
+        loggedDays.setLayout(new BoxLayout(loggedDays, BoxLayout.PAGE_AXIS));
+        loggedDays.setSize(100, 200);
         viewEntry = new JPanel();
+        viewEntry.setLayout(new BoxLayout(viewEntry, BoxLayout.PAGE_AXIS));
+        viewEntry.setSize(100, 200);
         errorMessage = new JLabel();
         loggedMonths.add(errorMessage);
     }
@@ -82,20 +85,17 @@ public class ViewFrame extends JFrame implements ActionListener {
         monthList.setVisibleRowCount(-1);
 
         scrollMonths = new JScrollPane(monthList);
+        scrollMonths.setSize(20, 40);
 
-        daySplitPane.setLeftComponent(loggedDays);
-        daySplitPane.setRightComponent(viewEntry);
         JLabel loggedDaysLabel = new JLabel("your entries in the selected month");
+        add(loggedMonths);
+        loggedMonths.add(scrollMonths);
+        loggedMonths.add(viewMonthButton);
+        add(loggedDays);
         loggedDays.add(loggedDaysLabel);
+        add(viewEntry);
         JLabel entryLabel = new JLabel("the entry for the selected day");
         viewEntry.add(entryLabel);
-        monthSplitPane.setLeftComponent(loggedMonths);
-//        JLabel loggedMonthsLabel = new JLabel("select a month to view in detail");
-//        loggedMonths.add(loggedMonthsLabel);
-        loggedMonths.add(scrollMonths);
-        monthSplitPane.setRightComponent(daySplitPane);
-
-        loggedMonths.add(viewMonthButton);
 
     }
 
@@ -110,7 +110,7 @@ public class ViewFrame extends JFrame implements ActionListener {
         dayList = new JList(dayObjectList);
         dayList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         dayList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-        dayList.setVisibleRowCount(-1);
+        dayList.setVisibleRowCount(1);
 
         scrollDays = new JScrollPane(dayList);
         loggedDays.add(scrollDays);
