@@ -4,39 +4,15 @@
         "month": "03/2022",
         "logged days": [
             {
-                "symptom": "headaches",
+                "symptom": "fatigue",
                 "mood": "angry",
-                "day": "01/03/2022",
+                "day": "23/03/2022",
                 "flow": "medium"
             },
             {
-                "symptom": "headaches",
+                "symptom": "fatigue",
                 "mood": "angry",
-                "day": "02/03/2022",
-                "flow": "medium"
-            },
-            {
-                "symptom": "headaches",
-                "mood": "angry",
-                "day": "03/03/2022",
-                "flow": "medium"
-            },
-            {
-                "symptom": "headaches",
-                "mood": "angry",
-                "day": "04/03/2022",
-                "flow": "medium"
-            },
-            {
-                "symptom": "headaches",
-                "mood": "angry",
-                "day": "05/03/2022",
-                "flow": "medium"
-            },
-            {
-                "symptom": "headaches",
-                "mood": "angry",
-                "day": "22/03/2022",
+                "day": "24/03/2022",
                 "flow": "medium"
             }
         ]
