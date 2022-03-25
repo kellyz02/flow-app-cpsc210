@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class EntryFrame extends JFrame implements ActionListener {
@@ -324,7 +325,7 @@ public class EntryFrame extends JFrame implements ActionListener {
                 case "fatigue":
                     flowDay.enterSymptom("fatigue");
                     break;
-                case "cravings":
+                case "food cravings":
                     flowDay.enterSymptom("food cravings");
                     break;
                 case "headaches":
@@ -344,17 +345,16 @@ public class EntryFrame extends JFrame implements ActionListener {
         String mood = "";
         String symptom = "";
 
-        if (currentDay.getFlow() != "") {
+        if (!Objects.equals(currentDay.getFlow(), "")) {
             flow = ", your flow was " + currentDay.getFlow();
         }
-        if (currentDay.getMood() != "") {
+        if (!Objects.equals(currentDay.getMood(), "")) {
             mood = ". You were feeling " + currentDay.getMood();
         }
-        if (currentDay.getSymptom() != "") {
+        if (!Objects.equals(currentDay.getSymptom(), "")) {
             symptom = ". You experienced " + currentDay.getSymptom();
         }
         String returnAttributes = "On " + currentDay.getDayName() + flow + mood + symptom + ".";
         return returnAttributes;
-        //loggedDay.setText(returnAttributes);
     }
 }

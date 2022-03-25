@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 
 public class ViewFrame extends JFrame implements ActionListener {
     private static final int HEIGHT = 400;
-    private static final int WIDTH = 500;
+    private static final int WIDTH = 700;
     private JList monthList;
     private JList dayList;
     private JLabel errorMessage;
@@ -38,13 +38,14 @@ public class ViewFrame extends JFrame implements ActionListener {
     public ViewFrame(FlowTracker flowTracker) {
         super("view/delete your previously tracked days");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setPreferredSize(new Dimension(700, 400));
+        setPreferredSize(new Dimension(1200, 410));
         ((JPanel) getContentPane()).setBorder(new EmptyBorder(13, 13, 13, 13));
         setLayout(new FlowLayout(FlowLayout.CENTER));
         this.flowTracker = flowTracker;
         createPanes();
         createButtons();
         formatSplitPane();
+        add(monthSplitPane);
         pack();
         setVisible(true);
         setResizable(false);
@@ -56,15 +57,15 @@ public class ViewFrame extends JFrame implements ActionListener {
     }
 
     public void createPanes() {
+        monthSplitPane = new JSplitPane();
+        monthSplitPane.setPreferredSize(new Dimension(1200, 400));
         loggedMonths = new JPanel();
-        loggedMonths.setLayout(new BoxLayout(loggedMonths, BoxLayout.PAGE_AXIS));
-        loggedMonths.setPreferredSize(new Dimension(75, 250));
+        loggedMonths.setPreferredSize(new Dimension(100, 400));
+//        loggedMonths.setLayout(new BoxLayout(loggedMonths, BoxLayout.PAGE_AXIS));
+        daySplitPane = new JSplitPane();
         loggedDays = new JPanel();
-        loggedDays.setLayout(new BoxLayout(loggedDays, BoxLayout.PAGE_AXIS));
-        loggedDays.setSize(100, 200);
         viewEntry = new JPanel();
         viewEntry.setLayout(new BoxLayout(viewEntry, BoxLayout.PAGE_AXIS));
-        viewEntry.setPreferredSize(new Dimension(200, 250));
         errorMessage = new JLabel();
         loggedMonths.add(errorMessage);
     }
@@ -85,18 +86,28 @@ public class ViewFrame extends JFrame implements ActionListener {
         monthList.setVisibleRowCount(-1);
 
         scrollMonths = new JScrollPane(monthList);
-        scrollMonths.setSize(20, 40);
 
+        daySplitPane.setLeftComponent(loggedDays);
+        daySplitPane.setRightComponent(viewEntry);
         JLabel loggedDaysLabel = new JLabel("your entries in the selected month");
-        add(loggedMonths);
-        loggedMonths.add(scrollMonths);
-        loggedMonths.add(viewMonthButton);
-        add(loggedDays);
         loggedDays.add(loggedDaysLabel);
-        add(viewEntry);
         JLabel entryLabel = new JLabel("the entry for the selected day");
         viewEntry.add(entryLabel);
+        monthSplitPane.setLeftComponent(loggedMonths);
+        monthSplitPane.setRightComponent(daySplitPane);
 
+        setDayAndMonthPanel();
+
+    }
+
+    public void setDayAndMonthPanel() {
+        viewedDay = new JTextArea();
+        viewedDay.setSize(50, 100);
+        viewEntry.add(viewedDay);
+
+        loggedMonths.add(scrollMonths);
+        loggedMonths.add(viewMonthButton);
+        scrollDays = new JScrollPane();
     }
 
     public void selectMonth() {
@@ -110,14 +121,15 @@ public class ViewFrame extends JFrame implements ActionListener {
         dayList = new JList(dayObjectList);
         dayList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         dayList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-        dayList.setVisibleRowCount(1);
+        dayList.setVisibleRowCount(-1);
 
+        loggedDays.remove(scrollDays);
         scrollDays = new JScrollPane(dayList);
         loggedDays.add(scrollDays);
         loggedDays.add(viewDayButton);
         loggedDays.add(deleteDayButton);
-        loggedDays.revalidate();
-        loggedDays.repaint();
+        revalidate();
+        repaint();
         refreshPanes();
     }
 
@@ -172,7 +184,6 @@ public class ViewFrame extends JFrame implements ActionListener {
         loggedDays.revalidate();
         loggedDays.repaint();
 
-        viewedDay = null;
         viewEntry.repaint();
         viewEntry.revalidate();
     }
@@ -181,10 +192,9 @@ public class ViewFrame extends JFrame implements ActionListener {
     public void viewDay() {
         String selectedDayName = dayList.getSelectedValue().toString();
         FlowDay selectedDay = selectedMonth.findFlowDay(selectedDayName);
-        viewedDay = new JTextArea();
-        viewedDay.setSize(50, 100);
-        viewEntry.add(viewedDay);
+        viewEntry.remove(viewedDay);
         printAttributes(selectedDay);
+        viewEntry.add(viewedDay);
         revalidate();
         repaint();
     }
@@ -211,17 +221,20 @@ public class ViewFrame extends JFrame implements ActionListener {
         String mood = "";
         String symptom = "";
 
-        if (currentDay.getFlow() != "") {
+        if (!currentDay.getFlow().equals("")) {
             flow = ", your flow was " + currentDay.getFlow();
         }
-        if (currentDay.getMood() != "") {
+        if (!currentDay.getMood().equals("")) {
             mood = ". You were feeling " + currentDay.getMood();
         }
-        if (currentDay.getSymptom() != "") {
+        if (!currentDay.getSymptom().equals("")) {
             symptom = ". You experienced " + currentDay.getSymptom();
         }
+
         String returnAttributes = "On " + currentDay.getDayName() + flow + mood + symptom + ".";
         viewedDay.setText(returnAttributes);
+        revalidate();
+        repaint();
     }
 
 

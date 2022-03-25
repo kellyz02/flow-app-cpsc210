@@ -71,12 +71,20 @@
         },
         {
             "month": "03/2022",
-            "logged days": [{
-                "symptom": "fatigue",
-                "mood": "PMS",
-                "day": "24/03/2022",
-                "flow": "spotting"
-            }]
+            "logged days": [
+                {
+                    "symptom": "headaches",
+                    "mood": "",
+                    "day": "24/03/2022",
+                    "flow": ""
+                },
+                {
+                    "symptom": "food cravings",
+                    "mood": "unmotivated",
+                    "day": "25/03/2022",
+                    "flow": "spotting"
+                }
+            ]
         },
         {
             "month": "08/2022",

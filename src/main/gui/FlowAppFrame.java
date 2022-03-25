@@ -17,6 +17,7 @@ import java.io.IOException;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import static javax.swing.JOptionPane.YES_NO_OPTION;
 
+// Main frame for menstrual cycle tracker application
 public class FlowAppFrame extends JFrame implements ActionListener {
     private static final int FRAME_WIDTH = 400;
     private static final int FRAME_HEIGHT = 400;
@@ -34,7 +35,7 @@ public class FlowAppFrame extends JFrame implements ActionListener {
     private JsonReader jsonReader;
     private static final String JSON_STORE = "./data/flowTracker.json";
 
-
+    // EFFECTS: runs the "FlowApp" application
     public FlowAppFrame() throws FileNotFoundException, IOException {
         super("welcome to flow app!");
         createFrame();
@@ -53,6 +54,8 @@ public class FlowAppFrame extends JFrame implements ActionListener {
         saveLoggedDays();
     }
 
+    // MODIFIES: this
+    // EFFECTS: processes
     public void loadPreviousDays() {
         loadIcon = new ImageIcon("filesicon3.png");
 //        Image loadImage = loadIcon.getImage();
