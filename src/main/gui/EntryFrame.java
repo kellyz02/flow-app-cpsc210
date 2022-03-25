@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+// Frame for logging a new entry
 public class EntryFrame extends JFrame implements ActionListener {
 
     private JTextField dateField;
@@ -35,7 +36,6 @@ public class EntryFrame extends JFrame implements ActionListener {
     private JPanel moodEntry;
     private JPanel symptomEntry;
     private JPanel dateEntry;
-    private JPanel helperPanel;
     private JPanel organizePanel;
     private JPanel finishEntryPanel;
     private JLabel flow;
@@ -43,14 +43,13 @@ public class EntryFrame extends JFrame implements ActionListener {
     private JLabel mood;
     private JLabel errorMessage;
     private JLabel symptom;
-    private JLabel entryFrameLabel;
     private ButtonGroup fc;
     private ButtonGroup mc;
     private ButtonGroup sc;
-    private JButton finishEntry;
     private FlowTracker flowTracker;
     private JPanel errorMessagePanel;
 
+    // EFFECTS: creates the frame for logging new entries
     public EntryFrame(FlowTracker flowTracker) {
         super("log a new entry!");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -75,6 +74,8 @@ public class EntryFrame extends JFrame implements ActionListener {
         setVisible(true);
     }
 
+    // MODIFIES: this
+    // EFFECTS: layouts the JPanels for this frame
     public void createEntryPanels() {
         dateEntry = new JPanel();
         dateEntry.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -95,17 +96,21 @@ public class EntryFrame extends JFrame implements ActionListener {
         errorMessagePanel.add(errorMessage);
     }
 
+    // MODIFIES: this
+    // EFFECTS: designs the main title labels
     public void labelPanel() {
-        entryFrameLabel = new JLabel("please select an option for the");
+        JLabel entryFrameLabel = new JLabel("please select an option for the");
         JLabel entryLabel = new JLabel("following fields to log your entry.");
         entryLabel.setFont(new Font("Dialog", Font.BOLD, 14));
         entryFrameLabel.setFont(new Font("Dialog", Font.BOLD, 14));
-        helperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel helperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         add(helperPanel);
         helperPanel.add(entryFrameLabel);
         helperPanel.add(entryLabel);
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds the JRadioButtons to their corresponding groups
     public void addEntryButtons() {
         flowEntry.add(flow);
         flowEntry.add(spotting);
@@ -131,14 +136,17 @@ public class EntryFrame extends JFrame implements ActionListener {
         finishEntryPanel();
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates the finishEntryPanel and adds it to the frame
     public void finishEntryPanel() {
-        finishEntry = new JButton("finish entry");
+        JButton finishEntry = new JButton("finish entry");
         finishEntry.setActionCommand("finish entry");
         finishEntry.addActionListener(this);
         finishEntryPanel.add(finishEntry);
     }
 
-
+    // MODIFIES: this
+    // EFFECTS: creates the date entry field
     public void createField() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate localDate = LocalDate.now();
@@ -147,6 +155,8 @@ public class EntryFrame extends JFrame implements ActionListener {
         dateField.setSize(10, 10);
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates the labels for the multiple choice questions
     public void entryLabels() {
         flow = new JLabel("flow: ");
         flow.setFont(new Font("Dialog", Font.BOLD, 14));
@@ -158,7 +168,8 @@ public class EntryFrame extends JFrame implements ActionListener {
         symptom.setFont(new Font("Dialog", Font.BOLD, 14));
     }
 
-
+    // MODIFIES: this
+    // EFFECTS: creates and adds the buttons for selecting flow
     public void flowChoices() {
         spotting = new JRadioButton("spotting");
         spotting.setActionCommand("spotting");
@@ -178,6 +189,8 @@ public class EntryFrame extends JFrame implements ActionListener {
         fc.add(noFlow);
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates and adds the buttons for selecting mood
     public void moodChoices() {
         happy = new JRadioButton("happy");
         happy.setActionCommand("happy");
@@ -197,6 +210,8 @@ public class EntryFrame extends JFrame implements ActionListener {
         mc.add(pms);
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates and adds the buttons for selecting symptom
     public void symptomChoices() {
         cramps = new JRadioButton("cramps");
         cramps.setActionCommand("cramps");
@@ -217,6 +232,8 @@ public class EntryFrame extends JFrame implements ActionListener {
     }
 
 
+    // MODIFIES: this
+    // EFFECTS: carries out action to finish logging entry
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("finish entry")) {
             String dateNamePattern = "\\d\\d/\\d\\d\\/\\d\\d\\d\\d";
@@ -235,8 +252,12 @@ public class EntryFrame extends JFrame implements ActionListener {
     }
 
 
+    // MODIFIES: this
+    // EFFECTS: creates JOptionPane to show finished entry
+    // SOURCE (changing options on JOptionPane): https://stackoverflow.com/questions/18286027/how-to-change-yes-no-
+    // option-in-confirmation-dialog
     public void finishEntry(FlowDay currentDay) {
-        ImageIcon finishIcon = new ImageIcon("filesicon3.png");
+        ImageIcon finishIcon = new ImageIcon("filesIcon3.png");
         String[] newOptions = new String[2];
         newOptions[0] = "log another entry";
         newOptions[1] = "return to home";
@@ -257,12 +278,16 @@ public class EntryFrame extends JFrame implements ActionListener {
     }
 
 
+    // MODIFIES: flowTracker
+    // EFFECTS: calls the methods that logs the entries into the flowTracker
     public void addAttributes(FlowDay flowDay) {
         processFlowCommand(flowDay);
         processMoodCommand(flowDay);
         processSymptomCommand(flowDay);
     }
 
+    // MODIFIES: flowTracker
+    // EFFECTS: adds the flow entry into flowTracker
     public void processFlowCommand(FlowDay flowDay) {
         if (fc.getSelection() != null) {
             String command = fc.getSelection().getActionCommand();
@@ -289,6 +314,8 @@ public class EntryFrame extends JFrame implements ActionListener {
 
     }
 
+    // MODIFIES: flowTracker
+    // EFFECTS: adds the mood entry into flowTracker
     public void processMoodCommand(FlowDay flowDay) {
         if (mc.getSelection() != null) {
             String command = mc.getSelection().getActionCommand();
@@ -315,6 +342,8 @@ public class EntryFrame extends JFrame implements ActionListener {
 
     }
 
+    // MODIFIES: flowTracker
+    // EFFECTS: adds the symptom entry into flowTracker
     public void processSymptomCommand(FlowDay flowDay) {
         if (sc.getSelection() != null) {
             String command = sc.getSelection().getActionCommand();
@@ -340,6 +369,7 @@ public class EntryFrame extends JFrame implements ActionListener {
         }
     }
 
+    // EFFECTS: return the entered attributes
     private String printAttributes(FlowDay currentDay) {
         String flow = "";
         String mood = "";
@@ -354,7 +384,6 @@ public class EntryFrame extends JFrame implements ActionListener {
         if (!Objects.equals(currentDay.getSymptom(), "")) {
             symptom = ". You experienced " + currentDay.getSymptom();
         }
-        String returnAttributes = "On " + currentDay.getDayName() + flow + mood + symptom + ".";
-        return returnAttributes;
+        return "On " + currentDay.getDayName() + flow + mood + symptom + ".";
     }
 }

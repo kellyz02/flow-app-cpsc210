@@ -10,13 +10,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+// Frame for viewing/deleting previously logged days
 public class ViewFrame extends JFrame implements ActionListener {
-    private static final int HEIGHT = 400;
-    private static final int WIDTH = 700;
     private JList monthList;
     private JList dayList;
     private JLabel errorMessage;
-    private JLabel daysInMonth;
     private JTextArea viewedDay;
     private JPanel loggedMonths;
     private JPanel loggedDays;
@@ -35,6 +33,7 @@ public class ViewFrame extends JFrame implements ActionListener {
     private FlowTracker flowTracker;
     private FlowMonth selectedMonth;
 
+    // EFFECTS: creates the frame for viewing previously logged days
     public ViewFrame(FlowTracker flowTracker) {
         super("view/delete your previously tracked days");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -51,17 +50,13 @@ public class ViewFrame extends JFrame implements ActionListener {
         setResizable(false);
     }
 
-    public void addErrorMessage() {
-        errorMessage = new JLabel();
-        loggedMonths.add(errorMessage);
-    }
-
+    // MODIFIES: this
+    // EFFECTS: creates and adds the panes to the frame
     public void createPanes() {
         monthSplitPane = new JSplitPane();
         monthSplitPane.setPreferredSize(new Dimension(1200, 400));
         loggedMonths = new JPanel();
         loggedMonths.setPreferredSize(new Dimension(100, 400));
-//        loggedMonths.setLayout(new BoxLayout(loggedMonths, BoxLayout.PAGE_AXIS));
         daySplitPane = new JSplitPane();
         loggedDays = new JPanel();
         viewEntry = new JPanel();
@@ -70,6 +65,8 @@ public class ViewFrame extends JFrame implements ActionListener {
         loggedMonths.add(errorMessage);
     }
 
+    // MODIFIES: this
+    // EFFECTS: formats the split panes
     public void formatSplitPane() {
         monthObjectList = new DefaultListModel<>();
         if (flowTracker.getKeys().isEmpty()) {
@@ -100,6 +97,8 @@ public class ViewFrame extends JFrame implements ActionListener {
 
     }
 
+    // MODIFIES: this
+    // EFFECTS: helper to format the day and month display panels
     public void setDayAndMonthPanel() {
         viewedDay = new JTextArea();
         viewedDay.setSize(50, 100);
@@ -110,6 +109,8 @@ public class ViewFrame extends JFrame implements ActionListener {
         scrollDays = new JScrollPane();
     }
 
+    // MODIFIES: this
+    // EFFECTS: carries out the action when selecting a month
     public void selectMonth() {
         dayObjectList = new DefaultListModel<>();
         String selectedMonthName = monthList.getSelectedValue().toString();
@@ -133,6 +134,8 @@ public class ViewFrame extends JFrame implements ActionListener {
         refreshPanes();
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates and adds the buttons for selecting days and months
     public void createButtons() {
         viewDayButton = new JButton("view selected day");
         viewDayButton.setActionCommand("view day");
@@ -147,6 +150,8 @@ public class ViewFrame extends JFrame implements ActionListener {
         viewMonthButton.addActionListener(this);
     }
 
+    // MODIFIES: this
+    // EFFECTS: carries out the actions when the buttons are pressed
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("view month")) {
             selectMonth();
@@ -169,6 +174,8 @@ public class ViewFrame extends JFrame implements ActionListener {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: refreshes the data displayed on the panes
     public void refreshPanes() {
         dayObjectList.clear();
         monthObjectList.clear();
@@ -189,6 +196,8 @@ public class ViewFrame extends JFrame implements ActionListener {
     }
 
 
+    // MODIFIES: this
+    // EFFECTS: displays the details of the viewed day
     public void viewDay() {
         String selectedDayName = dayList.getSelectedValue().toString();
         FlowDay selectedDay = selectedMonth.findFlowDay(selectedDayName);
@@ -199,6 +208,8 @@ public class ViewFrame extends JFrame implements ActionListener {
         repaint();
     }
 
+    // MODIFIES: this
+    // EFFECTS: deletes the selected day from frame and flowTracker
     public void deleteDay() {
         String selectedDayName = dayList.getSelectedValue().toString();
         FlowDay selectedDay = selectedMonth.findFlowDay(selectedDayName);
@@ -216,6 +227,8 @@ public class ViewFrame extends JFrame implements ActionListener {
     }
 
 
+    // MODIFIES: this
+    // EFFECTS: prints the attributes to display for the chosen date
     private void printAttributes(FlowDay currentDay) {
         String flow = "";
         String mood = "";
