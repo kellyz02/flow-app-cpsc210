@@ -58,13 +58,13 @@ public class ViewFrame extends JFrame implements ActionListener {
     public void createPanes() {
         loggedMonths = new JPanel();
         loggedMonths.setLayout(new BoxLayout(loggedMonths, BoxLayout.PAGE_AXIS));
-        loggedMonths.setSize(100, 200);
+        loggedMonths.setPreferredSize(new Dimension(75, 250));
         loggedDays = new JPanel();
         loggedDays.setLayout(new BoxLayout(loggedDays, BoxLayout.PAGE_AXIS));
         loggedDays.setSize(100, 200);
         viewEntry = new JPanel();
         viewEntry.setLayout(new BoxLayout(viewEntry, BoxLayout.PAGE_AXIS));
-        viewEntry.setSize(100, 200);
+        viewEntry.setPreferredSize(new Dimension(200, 250));
         errorMessage = new JLabel();
         loggedMonths.add(errorMessage);
     }
@@ -118,6 +118,7 @@ public class ViewFrame extends JFrame implements ActionListener {
         loggedDays.add(deleteDayButton);
         loggedDays.revalidate();
         loggedDays.repaint();
+        refreshPanes();
     }
 
     public void createButtons() {

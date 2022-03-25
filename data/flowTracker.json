@@ -72,10 +72,10 @@
         {
             "month": "03/2022",
             "logged days": [{
-                "symptom": "headaches",
-                "mood": "",
+                "symptom": "fatigue",
+                "mood": "PMS",
                 "day": "24/03/2022",
-                "flow": ""
+                "flow": "spotting"
             }]
         },
         {
