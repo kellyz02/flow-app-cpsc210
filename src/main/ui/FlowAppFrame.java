@@ -1,4 +1,4 @@
-package gui;
+package ui;
 
 import model.FlowTracker;
 import persistence.JsonReader;
@@ -180,6 +180,7 @@ public class FlowAppFrame extends JFrame implements ActionListener {
     }
 
 
+    // EFFECTS: runs the FlowApp
     public static void main(String[] args) {
         try {
             new FlowAppFrame();
