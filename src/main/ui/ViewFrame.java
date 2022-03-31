@@ -213,10 +213,11 @@ public class ViewFrame extends JFrame implements ActionListener {
     public void deleteDay() {
         String selectedDayName = dayList.getSelectedValue().toString();
         FlowDay selectedDay = selectedMonth.findFlowDay(selectedDayName);
-        selectedMonth.deleteFlowDay(selectedDay);
-        if (flowTracker.emptyMonth(selectedMonth.getMonthName())) {
-            flowTracker.deleteMonth(selectedMonth.getMonthName());
-        }
+//        selectedMonth.deleteFlowDay(selectedDay);
+//        if (flowTracker.emptyMonth(selectedMonth.getMonthName())) {
+//            flowTracker.deleteMonth(selectedMonth.getMonthName());
+//        }
+        flowTracker.deleteEntry(selectedDay, selectedMonth);
         refreshPanes();
         revalidate();
         repaint();

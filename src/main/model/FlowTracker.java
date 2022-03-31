@@ -25,7 +25,19 @@ public class FlowTracker implements Writable {
         FlowMonth newFlowMonth = new FlowMonth(monthName);
         flowMonthYearMap.putIfAbsent(monthName, newFlowMonth);
         flowMonthYearMap.get(monthName).addFlowDay(newFlowDay);
+        EventLog.getInstance().logEvent(new Event("Logged new entry for " + dateName));
         return newFlowDay;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: deletes the entry belonging to the selected day from the flowTracker. If the month that the day was in
+    // no longer has any entries left in it, the month is also deleted from the flowTracker
+    public void deleteEntry(FlowDay fd, FlowMonth fm) {
+        fm.deleteFlowDay(fd);
+        if (emptyMonth(fm.getMonthName())) {
+            deleteMonth(fm.getMonthName());
+        }
+        EventLog.getInstance().logEvent(new Event("Entry for " + fd.getDayName() + " was deleted"));
     }
 
     // MODIFIES: this

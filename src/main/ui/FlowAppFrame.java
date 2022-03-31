@@ -1,5 +1,7 @@
 package ui;
 
+import model.Event;
+import model.EventLog;
 import model.FlowTracker;
 import persistence.JsonReader;
 import persistence.JsonWriter;
@@ -12,6 +14,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
@@ -29,6 +32,9 @@ public class FlowAppFrame extends JFrame implements ActionListener {
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
     private static final String JSON_STORE = "./data/flowTracker.json";
+
+    private FileWriter fw;
+
 
     // EFFECTS: runs the "FlowApp" application
     public FlowAppFrame() throws FileNotFoundException, IOException {
@@ -83,9 +89,12 @@ public class FlowAppFrame extends JFrame implements ActionListener {
                 switch (result) {
                     case JOptionPane.YES_OPTION:
                         saveFlowTracker();
+                        printLog(EventLog.getInstance());
                         System.exit(0);
                         break;
                     case JOptionPane.NO_OPTION:
+                        System.out.println(EventLog.getInstance());
+                        printLog(EventLog.getInstance());
                         System.exit(0);
                     default:
                 }
@@ -176,6 +185,13 @@ public class FlowAppFrame extends JFrame implements ActionListener {
             System.out.println("Loaded " + flowTracker.getName() + " from " + JSON_STORE);
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
+        }
+    }
+
+    public void printLog(EventLog el) {
+        for (Event next : el) {
+            System.out.println(next);
+            System.out.println("\n\n");
         }
     }
 
