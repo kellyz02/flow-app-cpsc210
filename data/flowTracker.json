@@ -1,23 +1,4 @@
 {
     "tracker name": "My flow tracker",
-    "months tracked": [
-        {
-            "month": "02/2022",
-            "logged days": [{
-                "symptom": "",
-                "mood": "",
-                "day": "31/02/2022",
-                "flow": ""
-            }]
-        },
-        {
-            "month": "01/2022",
-            "logged days": [{
-                "symptom": "",
-                "mood": "",
-                "day": "31/01/2022",
-                "flow": ""
-            }]
-        }
-    ]
+    "months tracked": []
 }

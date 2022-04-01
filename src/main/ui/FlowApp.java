@@ -76,6 +76,7 @@ public class FlowApp {
     }
 
 
+    // EFFECTS: processes user command for an entry's attributes
     private void processInputCommand(String command, FlowDay newFlowDay) {
         if (command.equals("f")) {
             displayFlowMenu(newFlowDay);
